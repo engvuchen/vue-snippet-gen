@@ -7,22 +7,17 @@
     "rd": "^2.0.1",
     "vue-docgen-api": "^3.15.3"
   },
-  "devDependencies": {
-    "@vant/weapp": "^1.6.9",
-    "element-ui": "^2.15.2",
-    "husky": "^6.0.0",
-    "view-design": "^4.6.1"
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "cls-snippet": "bin/index.js"
+    "vue-snippet-gen": "bin/index.js"
   },
   "keywords": [
-    "snippet",
-    "cls"
+    "vue",
+    "snippet"
   ],
-  "author": "",
+  "author": "engvuchen",
   "license": "ISC"
 }
