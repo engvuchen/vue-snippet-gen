@@ -2,172 +2,134 @@ const vueDocs = require('vue-docgen-api');
 const rd = require('rd');
 const fs = require('fs');
 const path = require('path');
+const { readPkg, help } = require('./util');
 
 let matchNum = /^\d+$/;
-let matchLetter = /^'|"([a-zA-Z]+|[\u4e00-\u9fa5]+)'|"$/;
-let matchFunc = /^\(\) => \[\]$/;
+let matchLetter = /^"|'([a-zA-Z\/]+|[\u4e00-\u9fa5\/]+)'|"$/;
+let matchFunc = /(^\(\) => .+$)|(^function\(\) \{.+\};?$)/;
 let matchEmptyStr = /^(''|\"\")$/;
 let matchEmptyArr = /^\[\]$/;
 let matchBool = /^(true|false)$/;
+let matchUpperCase = /([A-Z])/g;
+let matchPascal = /([a-z]+)(?=[A-Z])/g;
 
-const [, , , env] = process.argv;
-let envConf = {
-  dev: {
-    package_name: '@tencent/weadmin-components-bizadmin',
-    component_path: 'src/v2/components',
-  },
-  '--prod': {
-    package_name: '@weadmin/wecomponents',
-    component_path: 'src/components',
-  },
-};
-let { package_name: packageName, component_path: componentPath } = envConf[env] ? envConf[env] : envConf.dev;
-// note: npx 环境需要 process.cwd(), 找不到 process.env.INIT_CWD
-let packagePath = `${process.cwd().replace(/\\/g, '/')}/node_modules/${packageName}`;
-fs.access(packagePath, fs.constants.F_OK, err => {
-  if (!err) {
-    main();
-  } else {
-    console.log(`组件库不存在。请安装 ${packageName}`);
+let defaultFileNames = ['index', 'main'];
+
+let componentInfoList = [];
+let parseConf = getParseConf(process.argv);
+parseConf.forEach(curConf => {
+  let { path: componentDir, tagNameType, mainComponents } = curConf;
+  if (!componentDir) {
+    console.log('miss path!');
+    help();
+    return;
   }
-});
 
-function main() {
-  const componentInfoList = [];
-  rd.eachFileFilterSync(`${packagePath}/${componentPath}`, /\.vue$/, function (f, s) {
-    componentInfoList.push(vueDocs.parse(f));
-  });
-  console.log('成功解析组件');
+  let componentLibName = componentDir.split('/')[0].match(/[a-z]+/g)[0];
+  let componentDirPath = `${process.cwd().replace(/\\/g, '/')}/node_modules/${componentDir}`;
+  fs.access(componentDirPath, fs.constants.F_OK, err => {
+    if (err) {
+      console.log(`${componentLibName}组件库不存在`);
+      return;
+    }
 
-  let childrenComponentNames = [
-    // "button",
-    // "calendar",
-    'origincalendar',
-    // "chart",
-    // "checkbox",
-    // "container",
-    // "input",
-    // "link",
-    // "vpagination",
-    // "processor",
-    // "querybuilder",
-    // "radio",
-    // "richtext",
-    // "select",
-    'selectlist',
-    // "tab",
-    // "table",
-    // "tag",
-    // "text",
-    // "textarea",
-    // "tree",
-    'upload-item',
-    // "upload"
-  ];
-  let supportExpandProps = ['attributes', 'validity'];
-
-  const componentProsDesMap = {};
-  let snippetCollection = {};
-  let pathConf = {
-    path: `${process.cwd().replace(/\\/g, '/')}/.vscode`,
-    file: 'snippets.code-snippets',
-    data: snippetCollection,
-  };
-  let componentPrefixes = [];
-  componentInfoList
-    .filter(curItem => !childrenComponentNames.includes(curItem.displayName.toLowerCase()))
-    .forEach(currentComponentInfo => {
-      let { displayName, props, events, methods, slots } = currentComponentInfo;
-
-      let componentName = displayName.toLowerCase();
-      let prefix = `cls-${componentName}`;
-      let desc = `@cls ${prefix}`;
-      let snippetConstructor = getSnippetConstructor({ prefix, desc });
-
-      let needExpand = [];
-      let snippetConstructorBody = {
-        component: componentName,
-        id: '$1',
-        name: '$1',
-        label: '',
-        value: undefined,
-        attributes: {},
-        validity: {},
-        decoration: [],
-      };
-      if (props) {
-        Object.keys(props).forEach(propsKey => {
-          let { description, tags, defaultValue } = props[propsKey];
-
-          // ## 检测到 tagsProperty 中包含 'ignore'，退出
-          let { property: tagsProperty, ignore: tagsIgnore } = tags;
-          if (tagsIgnore && tagsIgnore.some(curItem => curItem.title === 'ignore')) return;
-
-          // ## 构造属性默认值
-          let curDefaultValue = '';
-          if (defaultValue) {
-            ({ value: curDefaultValue } = defaultValue);
-          }
-          curDefaultValue = parseDefaultValue(curDefaultValue);
-
-          // ## 从备注中获取 该属性是哪部分包裹属性（attributes/validity）
-          let wrapperName = getWrapperNameFromDesc(description).replace(/___/g, '');
-          // ## 包裹属性可能会被写在 tag 中
-          if (tagsProperty || wrapperName) {
-            let tagName = '';
-            // ### tags 属性中包含 name 的部分，这个 name 是包裹属性名
-            if (tagsProperty) {
-              let wrapperNameFindResult = tagsProperty.find(curItem => curItem.name);
-              if (wrapperNameFindResult) {
-                let { name: wrapperName } = wrapperNameFindResult;
-                tagName = wrapperName;
-              }
-            }
-
-            wrapperName = tagName || wrapperName;
-            if (propsKey === 'wraperClass') propsKey = 'class';
-            snippetConstructorBody[wrapperName][propsKey] = curDefaultValue;
-          }
-
-          // ## 存储备注
-          if (!componentProsDesMap[componentName]) componentProsDesMap[componentName] = {};
-          // { input: {id: ''} }
-          componentProsDesMap[componentName][propsKey] = description;
-
-          if (supportExpandProps.includes(wrapperName)) needExpand.push(wrapperName);
-        });
+    rd.eachFileFilterSync(`${componentDirPath}`, /\.vue$/, function (filePath, stats) {
+      /**
+       * ## 组件解析过滤
+       * 1. 文件名被包含在 mainComponents / 默认文件名;
+       * 2. 文件路径中的某个元素与 mainComponents 中的某个 组件名 全等
+       */
+      let fileName = path.basename(filePath, '.vue');
+      let matchFileName = defaultFileNames.includes(fileName) || mainComponents.includes(fileName.toLowerCase());
+      let matchPathItem = filePath
+        .split('/')
+        .find(pathItem => mainComponents.find(curName => curName === pathItem.toLowerCase()));
+      if (matchFileName && matchPathItem) {
+        let result = vueDocs.parse(filePath);
+        if (tagNameType === 'kebab') {
+          // 组件库 导出对象名 一般是 Pascal；
+          // Pascal(AbC) => kebab(ab-c)
+          result.displayName = result.displayName.replace(matchPascal, '$1-').toLowerCase();
+        }
+        componentInfoList.push(result);
       }
-
-      // ## 为匹配属性添加备注 - Full 版本
-      snippetConstructor[desc].body = addDescToMatchProp({
-        body: snippetConstructorBody,
-        propsToDescMap: componentProsDesMap[componentName],
-      });
-      Object.assign(snippetCollection, snippetConstructor);
-
-      // ## 构造/存储额外拓展的 snippet（目前仅支持 attributes/validity）
-      needExpand.forEach(curWrapperName => {
-        let newPrefix = `${prefix}-${curWrapperName}`;
-        let newDesc = `@cls ${newPrefix}`;
-        let newSnippetConstructor = getSnippetConstructor({
-          prefix: newPrefix,
-          desc: newDesc,
-        });
-
-        newSnippetConstructor[newDesc].body = addDescToMatchProp({
-          body: snippetConstructorBody[curWrapperName],
-          propsToDescMap: componentProsDesMap[componentName],
-        });
-        Object.assign(snippetCollection, newSnippetConstructor);
-      });
-
-      // ### 打印列表的存储
-      componentPrefixes.push(prefix);
     });
 
-  writeToProjectSnippets(pathConf);
+    fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 2));
+  });
+});
+if (componentInfoList.length) {
+  main(curConf);
+}
+
+function main() {
+  const componentProsDesMap = {};
+  let snippetData = {};
+  let createSnippetFileConf = {
+    path: `${process.cwd().replace(/\\/g, '/')}/.vscode`,
+    file: 'snippets.code-snippets',
+    data: snippetData,
+  };
+  let componentPrefixes = [];
+  componentInfoList.forEach(currentComponentInfo => {
+    let { displayName, props, events, methods, slots } = currentComponentInfo;
+
+    let componentName = displayName.toLowerCase();
+    let prefix = `${componentLibName}-${componentName}`;
+    let desc = `@${componentLibName} ${prefix}`;
+    let snippetConstructor = getSnippetConstructor({ prefix, desc });
+
+    let propsTags = [];
+    if (props) {
+      Object.keys(props).forEach(propsKey => {
+        // ## 将驼峰props转为中划线props
+        let { description, tags, defaultValue, type } = props[propsKey];
+
+        // ## 检测到 tags 中包含 'ignore'，退出
+        let { default: tagsDefault, ignore: tagsIgnore } = tags;
+        if (tagsIgnore && tagsIgnore.some(curItem => curItem.title === 'ignore')) return;
+
+        // ## 构造属性默认值(备注 > props默认值)
+        let curDefaultValue = (tagsDefault && tagsDefault.description) || (defaultValue && defaultValue.value) || '';
+        let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue);
+        let kebabCasePropsKey = propsKey.replace(matchUpperCase, '-$1').toLowerCase();
+        // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
+        propsTags.push(
+          `  ${
+            (type && type.name !== 'string') || defaultValueType !== 'string' ? ':' : ''
+          }${kebabCasePropsKey}="${curValue}"`
+        );
+
+        // ## 存储备注
+        if (!componentProsDesMap[componentName]) componentProsDesMap[componentName] = {};
+        componentProsDesMap[componentName][kebabCasePropsKey] = description;
+      });
+    }
+
+    // ## 为匹配属性添加备注 - Full 版本
+    snippetConstructor[desc].body = [
+      '<!--',
+      `<${displayName}`,
+      ...addDescToMatchProp({
+        tags: propsTags,
+        propsToDescMap: componentProsDesMap[componentName],
+      }),
+      `>`,
+      ...getSlotsContent(slots),
+      `<${displayName}/>`,
+      '-->',
+    ];
+
+    Object.assign(snippetData, snippetConstructor);
+
+    // ### 打印列表的存储
+    componentPrefixes.push(prefix);
+  });
+
+  writeToProjectSnippets(createSnippetFileConf);
   console.log('成功写入到项目snippets');
 
+  // ## 打印指令列表
   const PLACEHOLDER_MAX = 2;
   console.log('以下是调用指令列表：');
   console.log(
@@ -182,33 +144,42 @@ function main() {
   );
 }
 
-function parseDefaultValue(defaultValue) {
+/**
+ *
+ * @param {String} defaultValue
+ * @returns {Object} result {type: '', value: ''}
+ */
+function parseDefaultValue(defaultValue = '') {
+  // NOTE: JSDocs 返回的 defaultValue.value 是字符串，需要解决一些格式问题（单引号）
+  defaultValue = defaultValue.replace(/\n+/g, ' ').replace(/\s+/g, ' ');
+
+  // ## 找到符合指定匹配规则的字符串
   let result = false;
   let matchFuncArr = [
     value => matchNum.test(value) && 'number',
     value => matchLetter.test(value) && 'string',
-    value => matchFunc.test(value) && 'array',
+    value => matchFunc.test(value) && 'function',
     value => matchEmptyStr.test(value) && 'emptyString',
     value => matchEmptyArr.test(value) && 'emptyArray',
     value => matchBool.test(value) && 'boolean',
   ];
   while (matchFuncArr.length !== 0 && !result) {
     let func = matchFuncArr.pop();
-    if (func) {
-      result = func(defaultValue) || false;
-    }
+    result = func(defaultValue) || false;
   }
+  // ### 目标不匹配任意一条规则，返回目标本身
+  if (!result) return { type: 'string', value: defaultValue };
 
-  if (!result) return defaultValue;
+  // ## 转换目标
   switch (result) {
     case 'number':
       defaultValue = Number.parseInt(defaultValue);
       break;
     case 'string':
-      defaultValue = defaultValue.replace(/\'([a-zA-Z]+|[\u4e00-\u9fa5]+)\'/, '$1');
+      defaultValue = defaultValue.replace(matchLetter, '$1');
       break;
-    case 'array':
-      defaultValue = [];
+    case 'function':
+      defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]()).replace(/"/g, '\\"') || '';
       break;
     case 'emptyString':
       defaultValue = '';
@@ -220,7 +191,76 @@ function parseDefaultValue(defaultValue) {
       defaultValue = defaultValue === 'true';
       break;
   }
-  return defaultValue;
+
+  return { type: result, value: defaultValue };
+}
+/**
+ * 根据 slots 获取 ‘text’ / <span name='key'>text</span> 的内同
+ * @param {Object}} slots {default, icon, ..slots}
+ * @returns {Array} result []
+ */
+function getSlotsContent(slots) {
+  let result = [];
+
+  let slotsKeys = Object.keys(slots);
+  if (slotsKeys.length) {
+    slotsKeys.forEach(slotKey => {
+      switch (slotKey) {
+        case 'default':
+          result.push('  text');
+          break;
+        default:
+          result.push(`  <span slot="${slotKey}">text</span>`);
+          break;
+      }
+    });
+  }
+
+  return result;
+}
+/**
+ * 为匹配属性添加备注；返回一个操作后的字符串数组
+ * @param {object} conf {body: [], propsToDescMap: [] }
+ * @returns {array} body
+ */
+function addDescToMatchProp(conf = { tags: [], propsToDescMap: {} }) {
+  let { tags, propsToDescMap } = conf;
+
+  let tagsLength = tags.length;
+  for (let i = 0; i < tagsLength; i++) {
+    let propAndValue = tags[i];
+
+    // {type, offset-bottom ..}
+    if (propsToDescMap) {
+      let propsNames = Object.keys(propsToDescMap);
+
+      let propNameReg = /[a-zA-Z_]+/;
+      let matchPropName = propsNames.find(curName => propAndValue.match(propNameReg) === curName);
+      if (matchPropName) {
+        let desc = propsToDescMap[matchPropName];
+        desc = desc.replace(/\n/g, '; ');
+        tags[i] = `${propAndValue} // ${desc}`;
+      }
+    }
+  }
+
+  return tags;
+}
+/**
+ * 从 prefix/desc 获取 snippet 基础结构
+ * @param {object} conf
+ * @returns {object} result
+ */
+function getSnippetConstructor(conf = { prefix: '', desc: '' }) {
+  let { prefix, desc } = conf;
+  return {
+    [desc]: {
+      scope: ['javascript', 'vue'],
+      prefix,
+      description: desc,
+      body: [],
+    },
+  };
 }
 function afterInitDirAndFile(conf) {
   let { path: curPath, file: curFilePath, success: successCallBack, error: errorCallBack, data } = conf;
@@ -264,62 +304,40 @@ function writeToProjectSnippets(conf = { path: '', file: '', data: {} }) {
     },
   });
 }
-function getWrapperNameFromDesc(desc) {
-  let wrapperNames = ['___attributes___', '___validity___'];
-  for (let i = 0; i < wrapperNames.length; i++) {
-    let wrapperName = wrapperNames[i];
-    if (desc.includes(wrapperName)) {
-      return wrapperName;
-    }
-  }
-  return '';
-}
 /**
- * 为匹配属性添加备注；返回一个操作后的字符串数组
- * @param {object} conf {body: [], propsToDescMap: [] }
- * @returns {array} bodyArr
+ * 返回 命令行（优先） 或 package.json配置
+ * returns {Array} parseConf [ {*path: '', tagNameType: '',(默认 kebab), mainComponents: []} ]
  */
-function addDescToMatchProp(conf = { body: [], propsToDescMap: {} }) {
-  let { body, propsToDescMap } = conf;
+function getParseConf(processArgs = []) {
+  // 命令仅支持 path / --tag-pascal-case, 会解析所有 vue 文件；配置以命令行优先
+  let parseConf = [];
+  if (processArgs.length) {
+    let curConf = {
+      path: '',
+      tagNameType: 'kebab',
+      mainComponents: [],
+    };
+    let tagNameTypeIndex = processArgs.indexOf('--tag-pascal-case');
+    if (tagNameTypeIndex > -1) {
+      curConf.tagNameType = 'pascal';
+      processArgs.splice(tagNameTypeIndex, 1);
+    }
 
-  let bodyArr = JSON.stringify(body, undefined, 2).split('\n') || [];
-  let bodyArrLength = bodyArr.length;
-  for (let i = 0; i < bodyArrLength; i++) {
-    let str = bodyArr[i];
+    let [, , , componentDir] = processArgs;
+    curConf.path = componentDir;
 
-    // {id, attributes, ..}
-    if (propsToDescMap) {
-      let propsNames = Object.keys(propsToDescMap);
+    parseConf.push(curConf);
+  } else {
+    let pkgConf = readPkg('./package.json')['vue-snippet-gen'] || [];
+    if (Array.isArray(pkgConf) && pkgConf.length) {
+      parseConf = pkgConf.map(curItem => {
+        curItem.mainComponents = curItem.mainComponents.map(name => (name = name.toLowerCase()));
+        if (!curConf.tagNameType) curConf.tagNameType = 'kebab';
 
-      let reg = /"([a-zA-Z]+)"/;
-      let matchPropName = propsNames.find(curName => {
-        // NOTE: validity 包含 id，造成干扰，属性名需要完全匹配
-        let result = str.match(reg);
-        if (result && result[1] === curName) return true;
+        return curItem;
       });
-      if (matchPropName) {
-        let desc = propsToDescMap[matchPropName];
-        desc = desc.replace(/\n/g, '; ');
-        bodyArr[i] = `${str} // ${desc}`;
-      }
     }
   }
 
-  return bodyArr;
-}
-/**
- * 从 prefix/desc 获取 snippet 基础结构
- * @param {object} conf
- * @returns {object} result
- */
-function getSnippetConstructor(conf = { prefix: '', desc: '' }) {
-  let { prefix, desc } = conf;
-  return {
-    [desc]: {
-      scope: ['javascript', 'vue'],
-      prefix,
-      description: desc,
-      body: [],
-    },
-  };
+  return parseConf;
 }

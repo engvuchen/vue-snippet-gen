@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+const { readPkg, help } = require('../util');
 
-let pkg = readPkg();
+let pkg = readPkg('../package.json');
 const cmds = {
-  '--add': () => {
+  '--path': () => {
     require('../index');
   },
   '--version': version,
@@ -14,14 +13,6 @@ const cmds = {
 const [, , cmd] = process.argv;
 cmds[cmd] ? cmds[cmd]() : help();
 
-function readPkg() {
-  return JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8'));
-}
 function version() {
   console.log(pkg.version);
-}
-function help() {
-  console.log(`Usage
-  cls-snippet --version, -v
-  cls-snippet --add < --prod > 添加snippet到项目`);
 }

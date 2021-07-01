@@ -1,0 +1,6468 @@
+[
+  {
+    "displayName": "Affix",
+    "description": "",
+    "tags": {},
+    "props": {
+      "offsetTop": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "offsetBottom": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": ""
+      },
+      "useCapture": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Alert",
+    "description": "",
+    "tags": {},
+    "props": {
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'info'"
+        }
+      },
+      "closable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showIcon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "banner": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-close": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "icon": {
+        "description": "",
+        "bindings": {}
+      },
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "desc": {
+        "description": "",
+        "bindings": {}
+      },
+      "close": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Anchor",
+    "description": "",
+    "tags": {},
+    "props": {
+      "affix": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "offsetTop": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "offsetBottom": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        }
+      },
+      "bounds": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "5"
+        }
+      },
+      "container": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "null",
+          "func": true
+        }
+      },
+      "showInk": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "scrollOffset": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      }
+    },
+    "events": {
+      "on-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "AutoComplete",
+    "description": "",
+    "tags": {},
+    "props": {
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "label": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "data": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": true,
+          "value": "() => []"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "clearable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "placeholder": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "icon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "filterMethod": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func|boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "placement": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'bottom-start'"
+        }
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "elementId": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "transferClassName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "capture": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "eventsEnabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-search": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-select": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-focus": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-blur": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-clear": {
+        "description": ""
+      }
+    },
+    "methods": [],
+    "slots": {
+      "input": {
+        "description": "",
+        "bindings": {}
+      },
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Badge",
+    "description": "",
+    "tags": {},
+    "props": {
+      "count": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        }
+      },
+      "dot": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "overflowCount": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "99"
+        }
+      },
+      "className": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        }
+      },
+      "showZero": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "text": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "status": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "type": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "offset": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "color": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "text": {
+        "description": "",
+        "bindings": {}
+      },
+      "count": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "notice",
+    "description": "",
+    "tags": {},
+    "props": {
+      "prefixCls": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "duration": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "1.5"
+        }
+      },
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "content": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "withIcon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        }
+      },
+      "render": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "hasTitle": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        }
+      },
+      "styles": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": true,
+          "value": "function() {\r\n    return {\r\n        right: '50%'\r\n    };\r\n}"
+        }
+      },
+      "closable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "className": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": true
+      },
+      "onClose": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "transitionName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "background": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "msgType": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {}
+  },
+  {
+    "displayName": "Breadcrumb",
+    "description": "",
+    "tags": {},
+    "props": {
+      "separator": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'/'"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Button",
+    "description": "",
+    "tags": {},
+    "props": {
+      "type": {
+        "description": "",
+        "tags": {
+          "default": [
+            {
+              "description": "default",
+              "title": "default"
+            }
+          ]
+        },
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'default'"
+        }
+      },
+      "shape": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "loading": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        }
+      },
+      "htmlType": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'button'"
+        }
+      },
+      "icon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "customIcon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "long": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "ghost": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "click": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Card",
+    "description": "",
+    "tags": {},
+    "props": {
+      "bordered": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "disHover": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "shadow": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "padding": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "defaultPadding"
+        }
+      },
+      "title": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "icon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "title": {
+        "description": "",
+        "bindings": {}
+      },
+      "extra": {
+        "description": "",
+        "bindings": {}
+      },
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Carousel",
+    "description": "",
+    "tags": {},
+    "props": {
+      "arrow": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'hover'"
+        }
+      },
+      "autoplay": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "autoplaySpeed": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "2000"
+        }
+      },
+      "loop": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "easing": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'ease'"
+        }
+      },
+      "dots": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'inside'"
+        }
+      },
+      "radiusDot": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "trigger": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'click'"
+        }
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "height": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'auto'"
+        }
+      }
+    },
+    "events": {
+      "on-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-click": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Cascader",
+    "description": "",
+    "tags": {},
+    "props": {
+      "data": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "clearable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "placeholder": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "trigger": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'click'"
+        }
+      },
+      "changeOnSelect": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "renderFormat": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "loadData": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "filterable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "notFoundText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "elementId": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "capture": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "transferClassName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "eventsEnabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-visible-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Cell",
+    "description": "",
+    "tags": {},
+    "props": {
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "title": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "label": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "extra": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "selected": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "icon": {
+        "description": "",
+        "scoped": true,
+        "bindings": {
+          "slot": "icon"
+        }
+      },
+      "default": {
+        "description": "",
+        "scoped": true,
+        "bindings": {
+          "slot": "default"
+        }
+      },
+      "extra": {
+        "description": "",
+        "scoped": true,
+        "bindings": {
+          "slot": "extra"
+        }
+      },
+      "label": {
+        "description": "",
+        "scoped": true,
+        "bindings": {
+          "slot": "label"
+        }
+      },
+      "arrow": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Checkbox",
+    "description": "",
+    "tags": {},
+    "props": {
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number|boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "trueValue": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number|boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "falseValue": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number|boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "label": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number|boolean"
+        },
+        "required": ""
+      },
+      "indeterminate": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "border": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Collapse",
+    "description": "",
+    "tags": {},
+    "props": {
+      "accordion": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array|string"
+        },
+        "required": ""
+      },
+      "simple": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "ColorPicker",
+    "description": "",
+    "tags": {},
+    "props": {
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "undefined"
+        }
+      },
+      "hue": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "alpha": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "recommend": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "format": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "undefined"
+        }
+      },
+      "colors": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "hideDropDown": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "placement": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'bottom'"
+        }
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "undefined"
+        }
+      },
+      "editable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "capture": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "transferClassName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "eventsEnabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-active-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-open-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-pick-success": {
+        "description": ""
+      },
+      "on-pick-clear": {
+        "description": ""
+      }
+    },
+    "methods": [],
+    "slots": {}
+  },
+  {
+    "displayName": "Divider",
+    "description": "",
+    "tags": {},
+    "props": {
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'horizontal'"
+        }
+      },
+      "orientation": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'center'"
+        }
+      },
+      "dashed": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'default'"
+        }
+      },
+      "plain": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Drawer",
+    "description": "",
+    "tags": {},
+    "props": {
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "title": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "width": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "256"
+        }
+      },
+      "height": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "256"
+        }
+      },
+      "closable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "maskClosable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "mask": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "maskStyle": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "styles": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "scrollable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "placement": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'right'"
+        }
+      },
+      "zIndex": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "1000"
+        }
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "className": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "inner": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "draggable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "beforeClose": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-close": {
+        "description": ""
+      },
+      "on-resize-width": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-visible-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "close": {
+        "description": "",
+        "bindings": {}
+      },
+      "header": {
+        "description": "",
+        "bindings": {}
+      },
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "trigger": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Dropdown",
+    "description": "",
+    "tags": {},
+    "props": {
+      "trigger": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'hover'"
+        }
+      },
+      "placement": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'bottom'"
+        }
+      },
+      "visible": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "transferClassName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "stopPropagation": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "capture": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "eventsEnabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-visible-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-clickoutside": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "list": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Row",
+    "description": "",
+    "tags": {},
+    "props": {
+      "type": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "align": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "justify": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "gutter": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "className": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        }
+      },
+      "wrap": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Icon",
+    "description": "",
+    "tags": {},
+    "props": {
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        }
+      },
+      "color": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        }
+      },
+      "custom": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      }
+    },
+    "events": {
+      "click": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {}
+  },
+  {
+    "displayName": "Input",
+    "description": "",
+    "tags": {},
+    "props": {
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'text'"
+        }
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "placeholder": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "maxlength": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "icon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        }
+      },
+      "autosize": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean|object"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "rows": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "2"
+        }
+      },
+      "readonly": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "number": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "autofocus": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "spellcheck": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "autocomplete": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'off'"
+        }
+      },
+      "clearable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "elementId": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "wrap": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'soft'"
+        }
+      },
+      "prefix": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "suffix": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "search": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "enterButton": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showWordLimit": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "password": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "border": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      }
+    },
+    "events": {
+      "on-enter": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-search": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-keydown": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-keypress": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-keyup": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-click": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-focus": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-blur": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-input-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-clear": {
+        "description": ""
+      }
+    },
+    "methods": [],
+    "slots": {
+      "prepend": {
+        "description": "",
+        "bindings": {}
+      },
+      "suffix": {
+        "description": "",
+        "bindings": {}
+      },
+      "append": {
+        "description": "",
+        "bindings": {}
+      },
+      "prefix": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "InputNumber",
+    "description": "",
+    "tags": {},
+    "props": {
+      "max": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "Infinity"
+        }
+      },
+      "min": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "-Infinity"
+        }
+      },
+      "step": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "1"
+        }
+      },
+      "activeChange": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "1"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "autofocus": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "readonly": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "editable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "precision": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": ""
+      },
+      "elementId": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "formatter": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "parser": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "placeholder": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "controlsOutside": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-focus": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-blur": {
+        "description": ""
+      }
+    },
+    "methods": [],
+    "slots": {}
+  },
+  {
+    "displayName": "Layout",
+    "description": "",
+    "tags": {},
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "List",
+    "description": "",
+    "tags": {},
+    "props": {
+      "border": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "itemLayout": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'horizontal'"
+        }
+      },
+      "header": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "footer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "loading": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "split": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "header": {
+        "description": "",
+        "bindings": {}
+      },
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "spin": {
+        "description": "",
+        "bindings": {}
+      },
+      "footer": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "LoadingBar",
+    "description": "",
+    "tags": {},
+    "props": {
+      "color": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'primary'"
+        }
+      },
+      "failedColor": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'error'"
+        }
+      },
+      "height": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "2"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {}
+  },
+  {
+    "displayName": "Menu",
+    "description": "",
+    "tags": {},
+    "props": {
+      "mode": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'vertical'"
+        }
+      },
+      "theme": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'light'"
+        }
+      },
+      "activeName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "openNames": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "accordion": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "width": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'240px'"
+        }
+      }
+    },
+    "events": {
+      "on-open-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-select": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Modal",
+    "description": "",
+    "tags": {},
+    "props": {
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "closable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "maskClosable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "title": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "width": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "520"
+        }
+      },
+      "okText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "cancelText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "loading": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "styles": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "className": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "footerHide": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "scrollable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "transitionNames": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "fullscreen": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "mask": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "draggable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "sticky": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "stickyDistance": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "10"
+        }
+      },
+      "resetDragPosition": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "zIndex": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "1000"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-cancel": {
+        "description": ""
+      },
+      "on-ok": {
+        "description": ""
+      },
+      "on-hidden": {
+        "description": ""
+      },
+      "on-visible-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "close": {
+        "description": "",
+        "bindings": {}
+      },
+      "header": {
+        "description": "",
+        "bindings": {}
+      },
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "footer": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Page",
+    "description": "",
+    "tags": {},
+    "props": {
+      "current": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "1"
+        }
+      },
+      "total": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "pageSize": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "10"
+        }
+      },
+      "pageSizeOpts": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "placement": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'bottom'"
+        }
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "simple": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showTotal": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showElevator": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showSizer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "className": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "styles": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "prevText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "nextText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "eventsEnabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "update:current": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-page-size-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Poptip",
+    "description": "",
+    "tags": {},
+    "props": {
+      "trigger": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'click'"
+        }
+      },
+      "placement": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'top'"
+        }
+      },
+      "title": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "content": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "width": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "confirm": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "okText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "cancelText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "popperClass": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "wordWrap": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "padding": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "capture": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "transferClassName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      }
+    },
+    "events": {
+      "on-cancel": {
+        "description": ""
+      },
+      "on-ok": {
+        "description": ""
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "title": {
+        "description": "",
+        "bindings": {}
+      },
+      "content": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Progress",
+    "description": "",
+    "tags": {},
+    "props": {
+      "percent": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "successPercent": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "status": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'normal'"
+        }
+      },
+      "hideInfo": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "strokeWidth": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "10"
+        }
+      },
+      "vertical": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "strokeColor": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|array"
+        },
+        "required": ""
+      },
+      "textInside": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-status-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Radio",
+    "description": "",
+    "tags": {},
+    "props": {
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number|boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "trueValue": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number|boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "falseValue": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number|boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "label": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "border": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Rate",
+    "description": "",
+    "tags": {},
+    "props": {
+      "count": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "5"
+        }
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "allowHalf": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "clearable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "character": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "icon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "customIcon": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Scroll",
+    "description": "",
+    "tags": {},
+    "props": {
+      "height": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "300"
+        }
+      },
+      "onReachTop": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onReachBottom": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onReachEdge": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "loadingText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "distanceToEdge": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|array"
+        }
+      },
+      "stopSlide": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Slider",
+    "description": "",
+    "tags": {},
+    "props": {
+      "min": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "max": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "100"
+        }
+      },
+      "step": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "1"
+        }
+      },
+      "range": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|array"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showInput": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "inputSize": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'default'"
+        }
+      },
+      "showStops": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "tipFormat": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "showTip": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'hover'"
+        }
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "activeChange": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "marks": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {}
+  },
+  {
+    "displayName": "Spin",
+    "description": "",
+    "tags": {},
+    "props": {
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "fix": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "fullscreen": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Split",
+    "description": "",
+    "tags": {},
+    "props": {
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0.5"
+        }
+      },
+      "mode": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'horizontal'"
+        }
+      },
+      "min": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'40px'"
+        }
+      },
+      "max": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'40px'"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-moving": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-move-end": {
+        "description": ""
+      },
+      "on-move-start": {
+        "description": ""
+      }
+    },
+    "methods": [],
+    "slots": {
+      "left": {
+        "description": "",
+        "bindings": {}
+      },
+      "trigger": {
+        "description": "",
+        "bindings": {}
+      },
+      "right": {
+        "description": "",
+        "bindings": {}
+      },
+      "top": {
+        "description": "",
+        "bindings": {}
+      },
+      "bottom": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Steps",
+    "description": "",
+    "tags": {},
+    "props": {
+      "current": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "0"
+        }
+      },
+      "status": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'process'"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "direction": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'horizontal'"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Table",
+    "description": "",
+    "tags": {},
+    "props": {
+      "data": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "columns": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "width": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": ""
+      },
+      "height": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": ""
+      },
+      "maxHeight": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|string"
+        },
+        "required": ""
+      },
+      "stripe": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "border": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showHeader": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "highlightRow": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "rowClassName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "context": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "noDataText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "noFilteredDataText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "disabledHover": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "loading": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "draggable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "tooltipTheme": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'dark'"
+        }
+      },
+      "tooltipMaxWidth": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "300"
+        }
+      },
+      "rowKey": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean|string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "spanMethod": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "showSummary": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "summaryMethod": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "sumText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "indentSize": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "16"
+        }
+      },
+      "loadData": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "updateShowChildren": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "contextMenu": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showContextMenu": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-current-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-row-click": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-row-dblclick": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-contextmenu": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          },
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous2>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-selection-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-expand": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-expand-tree": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-select-all": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-select-all-cancel": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-sort-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-filter-change": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-drag-drop": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "header": {
+        "description": "",
+        "bindings": {}
+      },
+      "footer": {
+        "description": "",
+        "bindings": {}
+      },
+      "contextMenu": {
+        "description": "",
+        "bindings": {}
+      },
+      "loading": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Tabs",
+    "description": "",
+    "tags": {},
+    "props": {
+      "value": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'line'"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'default'"
+        }
+      },
+      "animated": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "captureFocus": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "closable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "beforeRemove": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        }
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "draggable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "input": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-click": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-dblclick": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-contextmenu": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          },
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous2>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-tab-remove": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-drag-drop": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          },
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous2>"
+          },
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous3>"
+          },
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous4>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "extra": {
+        "description": "",
+        "bindings": {}
+      },
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "contextMenu": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Tag",
+    "description": "",
+    "tags": {},
+    "props": {
+      "closable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "checkable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "checked": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "color": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'default'"
+        }
+      },
+      "type": {
+        "description": "",
+        "tags": {},
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "fade": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "size": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'default'"
+        }
+      }
+    },
+    "events": {
+      "on-close": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Time",
+    "description": "",
+    "tags": {},
+    "props": {
+      "time": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number|date|string"
+        },
+        "required": true
+      },
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'relative'"
+        }
+      },
+      "hash": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "interval": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "60"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {}
+  },
+  {
+    "displayName": "Timeline",
+    "description": "",
+    "tags": {},
+    "props": {
+      "pending": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Tooltip",
+    "description": "",
+    "tags": {},
+    "props": {
+      "placement": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'bottom'"
+        }
+      },
+      "content": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "''"
+        }
+      },
+      "delay": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "100"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "controlled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "always": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "transfer": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": ""
+      },
+      "theme": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'dark'"
+        }
+      },
+      "maxWidth": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string|number"
+        },
+        "required": ""
+      },
+      "transferClassName": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "content": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Transfer",
+    "description": "",
+    "tags": {},
+    "props": {
+      "data": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "renderFormat": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "targetKeys": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "selectedKeys": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "listStyle": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "titles": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "operations": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "filterable": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "filterPlaceholder": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "filterMethod": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "notFoundText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "reverseOperation": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          },
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous2>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-selected-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": ""
+      }
+    }
+  },
+  {
+    "displayName": "Tree",
+    "description": "",
+    "tags": {},
+    "props": {
+      "data": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "multiple": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showCheckbox": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "checkStrictly": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "checkDirectly": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "emptyText": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "childrenKey": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'children'"
+        }
+      },
+      "loadData": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "render": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "selectNode": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "expandNode": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {
+      "on-select-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-check-change": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-contextmenu": {
+        "properties": [
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous1>"
+          },
+          {
+            "type": {
+              "names": [
+                "undefined"
+              ]
+            },
+            "name": "<anonymous2>"
+          }
+        ],
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      },
+      "on-toggle-expand": {
+        "description": "",
+        "type": {
+          "names": [
+            "undefined"
+          ]
+        }
+      }
+    },
+    "methods": [],
+    "slots": {
+      "contextMenu": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  },
+  {
+    "displayName": "Upload",
+    "description": "",
+    "tags": {},
+    "props": {
+      "action": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": true
+      },
+      "headers": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "multiple": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "data": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "object"
+        },
+        "required": ""
+      },
+      "name": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'file'"
+        }
+      },
+      "withCredentials": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "showUploadList": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "true"
+        }
+      },
+      "type": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "'select'"
+        }
+      },
+      "format": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "accept": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "string"
+        },
+        "required": ""
+      },
+      "maxSize": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "number"
+        },
+        "required": ""
+      },
+      "beforeUpload": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        }
+      },
+      "onProgress": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onSuccess": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onError": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onRemove": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onPreview": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onExceededSize": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "onFormatError": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "func"
+        },
+        "required": ""
+      },
+      "defaultFileList": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "array"
+        },
+        "required": ""
+      },
+      "paste": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "disabled": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      },
+      "webkitdirectory": {
+        "description": "",
+        "tags": {},
+        "type": {
+          "name": "boolean"
+        },
+        "required": "",
+        "defaultValue": {
+          "func": false,
+          "value": "false"
+        }
+      }
+    },
+    "events": {},
+    "methods": [],
+    "slots": {
+      "default": {
+        "description": "",
+        "bindings": {}
+      },
+      "tip": {
+        "description": "",
+        "bindings": {}
+      }
+    }
+  }
+]
