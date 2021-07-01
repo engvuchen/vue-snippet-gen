@@ -328,7 +328,7 @@ function getParseConf(processArgs = []) {
 
     parseConf.push(curConf);
   } else {
-    let pkgConf = readPkg('./package.json')['vue-snippet-gen'] || [];
+    let pkgConf = readPkg()['vue-snippet-gen'] || [];
     if (Array.isArray(pkgConf) && pkgConf.length) {
       parseConf = pkgConf.map(curItem => {
         curItem.mainComponents = curItem.mainComponents.map(name => (name = name.toLowerCase()));

@@ -2,7 +2,7 @@
 
 const { readPkg, help } = require('../util');
 
-let pkg = readPkg('../package.json');
+let pkg = readPkg();
 const cmds = {
   '--path': () => {
     require('../index');

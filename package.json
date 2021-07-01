@@ -1,6 +1,6 @@
 {
   "name": "vue-snippet-gen",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "解析Vue组件库，生成项目snippet",
   "main": "index.js",
   "dependencies": {
