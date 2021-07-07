@@ -5,7 +5,7 @@ const path = require('path');
 const { readPkg, help } = require('./util');
 
 let matchNum = /^\d+$/;
-let matchLetter = /^"|'([a-zA-Z\/]+|[\u4e00-\u9fa5\/]+)'|"$/;
+let matchLetter = /^"|'([a-zA-Z\/\-_]+|[\u4e00-\u9fa5\/\-_]+)'|"$/;
 let matchFunc = /(^\(\) => .+$)|(^function\(\) \{.+\};?$)/;
 let matchEmptyStr = /^(''|\"\")$/;
 let matchEmptyArr = /^\[\]$/;
@@ -13,61 +13,60 @@ let matchBool = /^(true|false)$/;
 let matchUpperCase = /([A-Z])/g;
 let matchPascal = /([a-z]+)(?=[A-Z])/g;
 
-let defaultFileNames = ['index', 'main'];
-
-let componentInfoList = [];
-let parseConf = getParseConf(process.argv);
-parseConf.forEach(curConf => {
+let parseConf = getParseConf();
+parseConf.map(curConf => {
   let { path: componentDir, tagNameType, mainComponents } = curConf;
+  componentDir = componentDir.replace(/\\/g, '/');
+  mainComponents.sort((a, b) => a - b);
+
   if (!componentDir) {
     console.log('miss path!');
     help();
     return;
   }
 
-  let componentLibName = componentDir.split('/')[0].match(/[a-z]+/g)[0];
+  let componentInfoList = [];
+  let componentLibName = componentDir.split('/')[0].match(/[a-z\-_]+/g)[0];
   let componentDirPath = `${process.cwd().replace(/\\/g, '/')}/node_modules/${componentDir}`;
+
   fs.access(componentDirPath, fs.constants.F_OK, err => {
     if (err) {
       console.log(`${componentLibName}组件库不存在`);
       return;
     }
 
-    rd.eachFileFilterSync(`${componentDirPath}`, /\.vue$/, function (filePath, stats) {
-      /**
-       * ## 组件解析过滤
-       * 1. 文件名被包含在 mainComponents / 默认文件名;
-       * 2. 文件路径中的某个元素与 mainComponents 中的某个 组件名 全等
-       */
-      let fileName = path.basename(filePath, '.vue');
-      let matchFileName = defaultFileNames.includes(fileName) || mainComponents.includes(fileName.toLowerCase());
-      let matchPathItem = filePath
-        .split('/')
-        .find(pathItem => mainComponents.find(curName => curName === pathItem.toLowerCase()));
-      if (matchFileName && matchPathItem) {
-        let result = vueDocs.parse(filePath);
-        if (tagNameType === 'kebab') {
-          // 组件库 导出对象名 一般是 Pascal；
-          // Pascal(AbC) => kebab(ab-c)
-          result.displayName = result.displayName.replace(matchPascal, '$1-').toLowerCase();
-        }
-        componentInfoList.push(result);
+    if (mainComponents.length) {
+      mainComponents = mainComponents.map(curPath => `${componentDirPath}/${curPath.replace(/\\/g, '/')}`);
+    } else {
+      rd.eachFileFilterSync(`${componentDirPath}`, /\.vue$/, function (filePath, stats) {
+        mainComponents.push(filePath);
+      });
+    }
+    mainComponents.forEach(filePath => {
+      let result = vueDocs.parse(filePath);
+
+      // ## 修改标签名的命名方式
+      if (tagNameType === 'kebab') {
+        // 组件库 导出对象名 一般是 Pascal
+        // Pascal(AbC) => kebab(ab-c)(中划线)
+        result.displayName = result.displayName.replace(matchPascal, '$1-').toLowerCase();
       }
+      componentInfoList.push(result);
     });
 
-    fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 2));
+    main({ data: componentInfoList, lib_name: componentLibName });
+    fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
   });
 });
-if (componentInfoList.length) {
-  main(curConf);
-}
 
-function main() {
-  const componentProsDesMap = {};
+function main(conf = { data: {}, lib_name: '' }) {
+  let { data: componentInfoList, lib_name: libName } = conf;
+
+  const componentAttrDesMap = {};
   let snippetData = {};
   let createSnippetFileConf = {
     path: `${process.cwd().replace(/\\/g, '/')}/.vscode`,
-    file: 'snippets.code-snippets',
+    file: `${libName}.code-snippets`,
     data: snippetData,
   };
   let componentPrefixes = [];
@@ -75,11 +74,11 @@ function main() {
     let { displayName, props, events, methods, slots } = currentComponentInfo;
 
     let componentName = displayName.toLowerCase();
-    let prefix = `${componentLibName}-${componentName}`;
-    let desc = `@${componentLibName} ${prefix}`;
+    let prefix = `${libName}-${componentName}`;
+    let desc = `@${libName} ${prefix}`;
     let snippetConstructor = getSnippetConstructor({ prefix, desc });
 
-    let propsTags = [];
+    let componentAttrs = [];
     if (props) {
       Object.keys(props).forEach(propsKey => {
         // ## 将驼峰props转为中划线props
@@ -94,15 +93,24 @@ function main() {
         let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue);
         let kebabCasePropsKey = propsKey.replace(matchUpperCase, '-$1').toLowerCase();
         // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
-        propsTags.push(
+        componentAttrs.push(
           `  ${
             (type && type.name !== 'string') || defaultValueType !== 'string' ? ':' : ''
           }${kebabCasePropsKey}="${curValue}"`
         );
 
         // ## 存储备注
-        if (!componentProsDesMap[componentName]) componentProsDesMap[componentName] = {};
-        componentProsDesMap[componentName][kebabCasePropsKey] = description;
+        if (!componentAttrDesMap[componentName]) componentAttrDesMap[componentName] = {};
+        componentAttrDesMap[componentName][kebabCasePropsKey] = description;
+      });
+    }
+    if (events) {
+      Object.keys(events).forEach(eventName => {
+        let { description } = events[eventName];
+
+        componentAttrs.push(`  @${eventName}=""`);
+        if (!componentAttrDesMap[componentName]) componentAttrDesMap[componentName] = {};
+        componentAttrDesMap[componentName][eventName] = description;
       });
     }
 
@@ -110,9 +118,9 @@ function main() {
     snippetConstructor[desc].body = [
       '<!--',
       `<${displayName}`,
-      ...addDescToMatchProp({
-        tags: propsTags,
-        propsToDescMap: componentProsDesMap[componentName],
+      ...addDescToMatchAttr({
+        attrs: componentAttrs,
+        attrToDescMap: componentAttrDesMap[componentName],
       }),
       `>`,
       ...getSlotsContent(slots),
@@ -131,14 +139,16 @@ function main() {
 
   // ## 打印指令列表
   const PLACEHOLDER_MAX = 2;
-  console.log('以下是调用指令列表：');
+  console.log(`${libName} Prefix List:`);
   console.log(
     componentPrefixes
       .map((curPrefix, index) => {
         let num = index + 1 + '';
         let numLength = num.length;
 
-        return `${num}${new Array(PLACEHOLDER_MAX - numLength).fill(' ').join('')}: ${curPrefix}`;
+        let placeholderNum = PLACEHOLDER_MAX - numLength;
+
+        return `${num}${new Array(placeholderNum > 0 ? placeholderNum : 0).fill(' ').join('')}: ${curPrefix}`;
       })
       .join('\n')
   );
@@ -177,9 +187,11 @@ function parseDefaultValue(defaultValue = '') {
       break;
     case 'string':
       defaultValue = defaultValue.replace(matchLetter, '$1');
+      console.log('string', defaultValue);
       break;
     case 'function':
-      defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]()).replace(/"/g, '\\"') || '';
+      defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]());
+      if (typeof defaultValue === 'string') defaultValue = defaultValue.replace(/"/g, '\\"') || '';
       break;
     case 'emptyString':
       defaultValue = '';
@@ -195,7 +207,7 @@ function parseDefaultValue(defaultValue = '') {
   return { type: result, value: defaultValue };
 }
 /**
- * 根据 slots 获取 ‘text’ / <span name='key'>text</span> 的内同
+ * 根据 slots 获取 ‘text’ 或 <span name='key'>text</span>
  * @param {Object}} slots {default, icon, ..slots}
  * @returns {Array} result []
  */
@@ -220,31 +232,31 @@ function getSlotsContent(slots) {
 }
 /**
  * 为匹配属性添加备注；返回一个操作后的字符串数组
- * @param {object} conf {body: [], propsToDescMap: [] }
+ * @param {object} conf {body: [], attrToDescMap: [] }
  * @returns {array} body
  */
-function addDescToMatchProp(conf = { tags: [], propsToDescMap: {} }) {
-  let { tags, propsToDescMap } = conf;
+function addDescToMatchAttr(conf = { tags: [], attrToDescMap: {} }) {
+  let { attrs, attrToDescMap } = conf;
 
-  let tagsLength = tags.length;
+  let tagsLength = attrs.length;
   for (let i = 0; i < tagsLength; i++) {
-    let propAndValue = tags[i];
+    let propAndValue = attrs[i];
 
     // {type, offset-bottom ..}
-    if (propsToDescMap) {
-      let propsNames = Object.keys(propsToDescMap);
+    if (attrToDescMap) {
+      let propsNames = Object.keys(attrToDescMap);
 
       let propNameReg = /[a-zA-Z_]+/;
       let matchPropName = propsNames.find(curName => propAndValue.match(propNameReg) === curName);
       if (matchPropName) {
-        let desc = propsToDescMap[matchPropName];
+        let desc = attrToDescMap[matchPropName];
         desc = desc.replace(/\n/g, '; ');
-        tags[i] = `${propAndValue} // ${desc}`;
+        attrs[i] = `${propAndValue} // ${desc}`;
       }
     }
   }
 
-  return tags;
+  return attrs;
 }
 /**
  * 从 prefix/desc 获取 snippet 基础结构
@@ -311,15 +323,15 @@ function writeToProjectSnippets(conf = { path: '', file: '', data: {} }) {
 function getParseConf(processArgs = []) {
   // 命令仅支持 path / --tag-pascal-case, 会解析所有 vue 文件；配置以命令行优先
   let parseConf = [];
-  if (processArgs.length) {
+  if (processArgs.length && processArgs.indexOf('--conf') === -1) {
     let curConf = {
       path: '',
-      tagNameType: 'kebab',
+      tagNameType: 'origin',
       mainComponents: [],
     };
-    let tagNameTypeIndex = processArgs.indexOf('--tag-pascal-case');
+    let tagNameTypeIndex = processArgs.indexOf('--tag-kebab-case');
     if (tagNameTypeIndex > -1) {
-      curConf.tagNameType = 'pascal';
+      curConf.tagNameType = 'kebab';
       processArgs.splice(tagNameTypeIndex, 1);
     }
 
@@ -332,7 +344,7 @@ function getParseConf(processArgs = []) {
     if (Array.isArray(pkgConf) && pkgConf.length) {
       parseConf = pkgConf.map(curItem => {
         curItem.mainComponents = curItem.mainComponents.map(name => (name = name.toLowerCase()));
-        if (!curConf.tagNameType) curConf.tagNameType = 'kebab';
+        if (!curItem.tagNameType) curItem.tagNameType = 'origin';
 
         return curItem;
       });

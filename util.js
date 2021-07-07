@@ -3,7 +3,7 @@ const path = require('path');
 
 function readPkg(pkgPath = '') {
   if (!pkgPath) pkgPath = `${process.cwd()}/package.json`;
-  return JSON.parse(fs.readFileSync(path.join(__dirname, pkgPath), 'utf-8'));
+  return JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 }
 function help() {
   console.log(`Usage
