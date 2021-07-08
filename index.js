@@ -90,7 +90,7 @@ function main(conf = { data: {}, lib_name: '' }) {
 
         // ## 构造属性默认值(备注 > props默认值)
         let curDefaultValue = (tagsDefault && tagsDefault.description) || (defaultValue && defaultValue.value) || '';
-        let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue);
+        let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName);
         let kebabCasePropsKey = propsKey.replace(matchUpperCase, '-$1').toLowerCase();
         // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
         componentAttrs.push(
@@ -159,7 +159,7 @@ function main(conf = { data: {}, lib_name: '' }) {
  * @param {String} defaultValue
  * @returns {Object} result {type: '', value: ''}
  */
-function parseDefaultValue(defaultValue = '') {
+function parseDefaultValue(defaultValue = '', componentName = '') {
   // NOTE: JSDocs 返回的 defaultValue.value 是字符串，需要解决一些格式问题（单引号）
   defaultValue = defaultValue.replace(/\n+/g, ' ').replace(/\s+/g, ' ');
 
@@ -187,13 +187,12 @@ function parseDefaultValue(defaultValue = '') {
       break;
     case 'string':
       defaultValue = defaultValue.replace(matchLetter, '$1');
-      console.log('string', defaultValue);
       break;
     case 'function':
       try {
         defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]());
       } catch (error) {
-        console.log(`ParseErr:`, error);
+        console.log(`${componentName} ParseErr:`, error);
         defaultValue = '';
       }
       if (typeof defaultValue === 'string') defaultValue = defaultValue.replace(/"/g, '\\"') || '';
