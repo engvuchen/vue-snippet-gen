@@ -14,10 +14,12 @@ let matchUpperCase = /([A-Z])/g;
 let matchPascal = /([a-z]+)(?=[A-Z])/g;
 
 let parseConf = getParseConf();
+
+console.log('parseConf', parseConf);
+
 parseConf.map(curConf => {
   let { path: componentDir, tagNameType, mainComponents } = curConf;
   componentDir = componentDir.replace(/\\/g, '/');
-  mainComponents.sort((a, b) => a - b);
 
   if (!componentDir) {
     console.log('miss path!');
@@ -48,7 +50,7 @@ parseConf.map(curConf => {
       // ## 修改标签名的命名方式
       if (tagNameType === 'kebab') {
         // 组件库 导出对象名 一般是 Pascal
-        // Pascal(AbC) => kebab(ab-c)(中划线)
+        // 默认-Pascal(AbC) => kebab(ab-c)(中划线)
         result.displayName = result.displayName.replace(matchPascal, '$1-').toLowerCase();
       }
       componentInfoList.push(result);
@@ -325,7 +327,7 @@ function writeToProjectSnippets(conf = { path: '', file: '', data: {} }) {
  * returns {Array} parseConf [ {*path: '', tagNameType: '',(默认 kebab), mainComponents: []} ]
  */
 function getParseConf(processArgs = []) {
-  // 命令仅支持 path / --tag-pascal-case, 会解析所有 vue 文件；配置以命令行优先
+  // 命令仅支持 path / --tag-kebab-case, 会解析所有 vue 文件；配置以命令行优先
   let parseConf = [];
   if (processArgs.length && processArgs.indexOf('--conf') === -1) {
     let curConf = {
