@@ -5,8 +5,8 @@ const path = require('path');
 const { readPkg, help } = require('./util');
 
 let matchNum = /^\d+$/;
-let matchLetter = /^"|'([a-zA-Z\/\-_]+|[\u4e00-\u9fa5\/\-_]+)'|"$/;
-let matchFunc = /(^\(\) => .+$)|(^function\(\) \{.+\};?$)/;
+let matchLetter = /^"|'([a-zA-Z\/\-_#]+|[\u4e00-\u9fa5\/\-_#]+)'|"$/;
+let matchFunc = /(^\(\)\s*=>.+$)|(^function\s*\(\)\s*\{.+\}$)/;
 let matchEmptyStr = /^(''|\"\")$/;
 let matchEmptyArr = /^\[\]$/;
 let matchBool = /^(true|false)$/;
