@@ -190,7 +190,12 @@ function parseDefaultValue(defaultValue = '') {
       console.log('string', defaultValue);
       break;
     case 'function':
-      defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]());
+      try {
+        defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]());
+      } catch (error) {
+        console.log(`ParseErr:`, error);
+        defaultValue = '';
+      }
       if (typeof defaultValue === 'string') defaultValue = defaultValue.replace(/"/g, '\\"') || '';
       break;
     case 'emptyString':
