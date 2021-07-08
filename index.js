@@ -326,8 +326,10 @@ function writeToProjectSnippets(conf = { path: '', file: '', data: {} }) {
  * 返回 命令行（优先） 或 package.json配置
  * returns {Array} parseConf [ {*path: '', tagNameType: '',(默认 kebab), mainComponents: []} ]
  */
-function getParseConf(processArgs = []) {
+function getParseConf() {
   // 命令仅支持 path / --tag-kebab-case, 会解析所有 vue 文件；配置以命令行优先
+  let processArgs = process.argv;
+
   let parseConf = [];
   if (processArgs.length && processArgs.indexOf('--conf') === -1) {
     let curConf = {
