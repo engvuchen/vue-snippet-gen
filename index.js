@@ -15,8 +15,6 @@ let matchPascal = /([a-z]+)(?=[A-Z])/g;
 
 let parseConf = getParseConf();
 
-console.log('parseConf', parseConf);
-
 parseConf.map(curConf => {
   let { path: componentDir, tagNameType, mainComponents } = curConf;
   componentDir = componentDir.replace(/\\/g, '/');
