@@ -259,8 +259,10 @@ function addDescToMatchAttr(conf = { tags: [], attrToDescMap: {} }) {
       });
       if (matchPropName) {
         let desc = attrToDescMap[matchPropName];
-        desc = desc.replace(/\n/g, '; ');
-        attrs[i] = `${propAndValue} // ${desc}`;
+        if (desc) {
+          desc = desc.replace(/\n/g, '; ');
+          attrs[i] = `${propAndValue} // ${desc}`;
+        }
       }
     }
   }
