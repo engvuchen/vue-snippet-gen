@@ -251,7 +251,12 @@ function addDescToMatchAttr(conf = { tags: [], attrToDescMap: {} }) {
       let propsNames = Object.keys(attrToDescMap);
 
       let propNameReg = /[a-zA-Z_]+/;
-      let matchPropName = propsNames.find(curName => propAndValue.match(propNameReg) === curName);
+      let matchPropName = propsNames.find(curName => {
+        let matchResult = propAndValue.match(propNameReg);
+        if (matchResult) {
+          matchResult[0] === curName;
+        }
+      });
       if (matchPropName) {
         let desc = attrToDescMap[matchPropName];
         desc = desc.replace(/\n/g, '; ');
