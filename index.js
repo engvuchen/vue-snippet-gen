@@ -195,7 +195,6 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
       try {
         defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]());
       } catch (error) {
-        console.log('error', error);
         console.log(`Function Parse Error. See ${componentName} ${propsKey}: ${defaultValue}`);
         defaultValue = '';
       }
