@@ -14,16 +14,19 @@ let matchUpperCase = /([A-Z])/g;
 let matchPascal = /([a-z]+)(?=[A-Z])/g;
 
 let parseConf = getParseConf();
-
+if (!parseConf.length) {
+  console.log('Conf is empty!');
+  return;
+}
 parseConf.map(curConf => {
   let { path: componentDir, tagNameType, mainComponents } = curConf;
-  componentDir = componentDir.replace(/\\/g, '/');
 
   if (!componentDir) {
-    console.log('miss path!');
+    console.log('Miss path!');
     help();
     return;
   }
+  componentDir = componentDir.replace(/\\/g, '/');
 
   let componentInfoList = [];
   let componentLibName = componentDir.split('/')[0].match(/[a-z\-_]+/g)[0];
@@ -31,14 +34,14 @@ parseConf.map(curConf => {
 
   fs.access(componentDirPath, fs.constants.F_OK, err => {
     if (err) {
-      console.log(`${componentLibName}组件库不存在`);
+      console.log(`${componentLibName} doesn't exist!`);
       return;
     }
 
     if (mainComponents.length) {
       mainComponents = mainComponents.map(curPath => `${componentDirPath}/${curPath.replace(/\\/g, '/')}`);
     } else {
-      rd.eachFileFilterSync(`${componentDirPath}`, /\.vue$/, function (filePath, stats) {
+      rd.eachFileFilterSync(`${componentDirPath}`, /\.vue$/, (filePath, stats) => {
         mainComponents.push(filePath);
       });
     }
@@ -90,7 +93,7 @@ function main(conf = { data: {}, lib_name: '' }) {
 
         // ## 构造属性默认值(备注 > props默认值)
         let curDefaultValue = (tagsDefault && tagsDefault.description) || (defaultValue && defaultValue.value) || '';
-        let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName);
+        let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName, propsKey);
         let kebabCasePropsKey = propsKey.replace(matchUpperCase, '-$1').toLowerCase();
         // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
         componentAttrs.push(
@@ -135,7 +138,7 @@ function main(conf = { data: {}, lib_name: '' }) {
   });
 
   writeToProjectSnippets(createSnippetFileConf);
-  console.log('成功写入到项目snippets');
+  console.log('Snippets is in .vscode folder.');
 
   // ## 打印指令列表
   const PLACEHOLDER_MAX = 2;
@@ -159,7 +162,7 @@ function main(conf = { data: {}, lib_name: '' }) {
  * @param {String} defaultValue
  * @returns {Object} result {type: '', value: ''}
  */
-function parseDefaultValue(defaultValue = '', componentName = '') {
+function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '') {
   // NOTE: JSDocs 返回的 defaultValue.value 是字符串，需要解决一些格式问题（单引号）
   defaultValue = defaultValue.replace(/\n+/g, ' ').replace(/\s+/g, ' ');
 
@@ -192,7 +195,8 @@ function parseDefaultValue(defaultValue = '', componentName = '') {
       try {
         defaultValue = JSON.stringify(eval(`[${defaultValue}]`)[0]());
       } catch (error) {
-        console.log(`${componentName} ParseErr:`, error);
+        console.log('error', error);
+        console.log(`Function Parse Error. See ${componentName} ${propsKey}: ${defaultValue}`);
         defaultValue = '';
       }
       if (typeof defaultValue === 'string') defaultValue = defaultValue.replace(/"/g, '\\"') || '';
@@ -296,7 +300,7 @@ function afterInitDirAndFile(conf) {
     if (!err) {
       successCallBack(conf);
     } else {
-      console.log(`${fileExistPath}不存在。已创建目录、文件。`);
+      console.log(`${fileExistPath} doesn’t exist. Created directory, file.`);
 
       // ### 文件不存在，可能是 目录不存在，也可能是 文件不存在
       let folderPath = path.resolve(__dirname, curPath);
@@ -332,7 +336,7 @@ function writeToProjectSnippets(conf = { path: '', file: '', data: {} }) {
  * returns {Array} parseConf [ {*path: '', tagNameType: '',(默认 kebab), mainComponents: []} ]
  */
 function getParseConf() {
-  // 命令仅支持 path / --tag-kebab-case, 会解析所有 vue 文件；配置以命令行优先
+  // note: 命令仅支持 path / --tag-kebab-case(默认origin，不错处理), 会解析所有 vue 文件；配置以命令行优先
   let processArgs = process.argv;
 
   let parseConf = [];
@@ -347,17 +351,23 @@ function getParseConf() {
       curConf.tagNameType = 'kebab';
       processArgs.splice(tagNameTypeIndex, 1);
     }
-
     let [, , , componentDir] = processArgs;
-    curConf.path = componentDir;
+    curConf.path = componentDir || '';
 
     parseConf.push(curConf);
   } else {
     let pkgConf = readPkg()['vue-snippet-gen'] || [];
     if (Array.isArray(pkgConf) && pkgConf.length) {
       parseConf = pkgConf.map(curItem => {
-        curItem.mainComponents = curItem.mainComponents.map(name => (name = name.toLowerCase()));
-        if (!curItem.tagNameType) curItem.tagNameType = 'origin';
+        [
+          { key: 'path', defaultValue: '', target: curItem },
+          { key: 'tagNameType', defaultValue: 'origin', target: curItem },
+          { key: 'mainComponents', defaultValue: [], target: curItem },
+        ].forEach(curItem => {
+          let { key, defaultValue, target } = curItem;
+          if (target[key] === undefined) target[key] = defaultValue;
+        });
+        curItem.mainComponents.forEach(name => (name = name.toLowerCase()));
 
         return curItem;
       });
