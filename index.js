@@ -198,7 +198,7 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
         console.log(`Function Parse Error. See ${componentName} ${propsKey}: ${defaultValue}`);
         defaultValue = '';
       }
-      if (typeof defaultValue === 'string') defaultValue = defaultValue.replace(/"/g, '\\"') || '';
+      if (typeof defaultValue === 'string') defaultValue = defaultValue.replace(/"/g, "'") || '';
       break;
     case 'emptyString':
       defaultValue = '';
@@ -335,7 +335,7 @@ function writeToProjectSnippets(conf = { path: '', file: '', data: {} }) {
  * returns {Array} parseConf [ {*path: '', tagNameType: '',(默认 kebab), mainComponents: []} ]
  */
 function getParseConf() {
-  // note: 命令仅支持 path / --tag-kebab-case(默认origin，不错处理), 会解析所有 vue 文件；配置以命令行优先
+  // note: 命令仅支持 path / --tag-kebab-case(默认origin，参数无效不处理), 会解析所有 vue 文件；配置以命令行优先
   let processArgs = process.argv;
 
   let parseConf = [];
