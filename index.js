@@ -58,7 +58,7 @@ parseConf.map(curConf => {
     });
 
     main({ data: componentInfoList, lib_name: componentLibName });
-    fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
+    // fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
   });
 });
 
