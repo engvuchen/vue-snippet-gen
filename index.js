@@ -12,6 +12,7 @@ let matchEmptyArr = /^\[\]$/;
 let matchBool = /^(true|false)$/;
 let matchUpperCase = /([A-Z])/g;
 let matchPascal = /([a-z]+)(?=[A-Z])/g;
+let matchPropNameReg = /[a-zA-Z_]+/;
 
 let parseConf = getParseConf();
 if (!parseConf.length) {
@@ -253,15 +254,12 @@ function addDescToMatchAttr(conf = { tags: [], attrToDescMap: {} }) {
     if (attrToDescMap) {
       let propsNames = Object.keys(attrToDescMap);
 
-      let propNameReg = /[a-zA-Z_]+/;
-      let matchPropName = propsNames.find(curName => {
-        let matchResult = propAndValue.match(propNameReg);
-        if (matchResult) {
-          matchResult[0] === curName;
-        }
+      let propName = propsNames.find(curName => {
+        let matchResult = propAndValue.match(matchPropNameReg);
+        if (matchResult) return matchResult[0] === curName;
       });
-      if (matchPropName) {
-        let desc = attrToDescMap[matchPropName];
+      if (propName) {
+        let desc = attrToDescMap[propName];
         if (desc) {
           desc = desc.replace(/\n/g, '; ');
           attrs[i] = `${propAndValue} // ${desc}`;
