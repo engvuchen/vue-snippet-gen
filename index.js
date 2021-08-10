@@ -5,7 +5,7 @@ const path = require('path');
 const { readPkg, help } = require('./util');
 
 let matchNum = /^\d+$/;
-let matchLetter = /^"|'([a-zA-Z\/\-_#]+|[\u4e00-\u9fa5\/\-_#]+)'|"$/;
+let matchLetter = /(^'(.+)'$)|(^"(.+)"$)/;
 let matchFunc = /(^\(\)\s*=>.+$)|(^function\s*\(\)\s*\{.+\}$)/;
 let matchEmptyStr = /^(''|\"\")$/;
 let matchEmptyArr = /^\[\]$/;
@@ -92,11 +92,11 @@ function main(conf = { data: {}, lib_name: '' }) {
         let { default: tagsDefault, ignore: tagsIgnore } = tags;
         if (tagsIgnore && tagsIgnore.some(curItem => curItem.title === 'ignore')) return;
 
-        // ## 构造属性默认值(备注 > props默认值)
+        // ## 构造属性默认值(备注[@default] > props.default)
         let curDefaultValue = (tagsDefault && tagsDefault.description) || (defaultValue && defaultValue.value) || '';
         let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName, propsKey);
         let kebabCasePropsKey = propsKey.replace(matchUpperCase, '-$1').toLowerCase();
-        // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
+        // ## 按照 @default/props.default, 决定是否转义(:)默认值
         componentAttrs.push(
           `  ${
             (type && type.name !== 'string') || defaultValueType !== 'string' ? ':' : ''
@@ -118,7 +118,7 @@ function main(conf = { data: {}, lib_name: '' }) {
       });
     }
 
-    // ## 为匹配属性添加备注 - Full 版本
+    // ## 为匹配属性添加备注
     snippetConstructor[desc].body = [
       '<!--',
       `<${displayName}`,
@@ -156,6 +156,7 @@ function main(conf = { data: {}, lib_name: '' }) {
       })
       .join('\n')
   );
+  console.log(`---------------------------------------------------`);
 }
 
 /**
@@ -190,7 +191,7 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
       defaultValue = Number.parseInt(defaultValue);
       break;
     case 'string':
-      defaultValue = defaultValue.replace(matchLetter, '$1');
+      defaultValue = defaultValue.replace(matchLetter, '$2');
       break;
     case 'function':
       try {
