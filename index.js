@@ -118,24 +118,34 @@ function main(conf = { data: {}, lib_name: '' }) {
       });
     }
 
-    // ## 为匹配属性添加备注
+    // ## 为匹配属性添加备注 - Full 版本
+    // ## 为匹配属性添加备注 - Full 版本
+    let tagProps = addDescToMatchAttr({
+      attrs: componentAttrs,
+      attrToDescMap: componentAttrDesMap[componentName],
+    });
     snippetConstructor[desc].body = [
       '<!--',
       `<${displayName}`,
-      ...addDescToMatchAttr({
-        attrs: componentAttrs,
-        attrToDescMap: componentAttrDesMap[componentName],
-      }),
+      ...tagProps,
       `>`,
       ...getSlotsContent(slots),
       `<${displayName}/>`,
       '-->',
     ];
-
     Object.assign(snippetData, snippetConstructor);
-
     // ### 打印列表的存储
     componentPrefixes.push(prefix);
+
+    // todo: 新建 snippet - props 的版本
+    if (tagProps.length) {
+      let prosSnippetDesc = `${desc}-props`;
+      let prosSnippetPrefix = `${prefix}-props`;
+      let propsSnippetConstructor = getSnippetConstructor({ prefix: prosSnippetPrefix, desc: prosSnippetDesc });
+      propsSnippetConstructor[prosSnippetDesc].body = ['<!--', ...tagProps, '-->'];
+      Object.assign(snippetData, propsSnippetConstructor);
+      componentPrefixes.push(prosSnippetPrefix);
+    }
   });
 
   writeToProjectSnippets(createSnippetFileConf);
@@ -274,7 +284,7 @@ function addDescToMatchAttr(conf = { tags: [], attrToDescMap: {} }) {
 /**
  * 从 prefix/desc 获取 snippet 基础结构
  * @param {object} conf
- * @returns {object} result
+ * @returns {object} result { [desc]: { ... } }
  */
 function getSnippetConstructor(conf = { prefix: '', desc: '' }) {
   let { prefix, desc } = conf;
