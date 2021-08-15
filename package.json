@@ -1,11 +1,11 @@
 {
   "name": "vue-snippet-gen",
   "version": "0.0.15",
-  "description": "解析Vue组件库，生成项目snippet",
+  "description": "解析 Vue 组件库，生成项目 snippet",
   "main": "index.js",
   "dependencies": {
     "rd": "^2.0.1",
-    "vue-docgen-api": "^3.15.3"
+    "vue-docgen-api": "^3.26.0"
   },
   "devDependencies": {},
   "scripts": {

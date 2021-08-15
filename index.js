@@ -5,14 +5,16 @@ const path = require('path');
 const { readPkg, help } = require('./util');
 
 let matchNum = /^\d+$/;
-let matchLetter = /(^'(.+)'$)|(^"(.+)"$)/;
+// let matchStr = /^"|'([a-zA-Z\/\-_#]+|[\u4e00-\u9fa5\/\-_#]+)'|"$/;
+let matchStr = /('.+'|".+")/;
 let matchFunc = /(^\(\)\s*=>.+$)|(^function\s*\(\)\s*\{.+\}$)/;
-let matchEmptyStr = /^(''|\"\")$/;
+// let matchEmptyStr = /^(''|\"\")$/;
 let matchEmptyArr = /^\[\]$/;
 let matchBool = /^(true|false)$/;
 let matchUpperCase = /([A-Z])/g;
 let matchPascal = /([a-z]+)(?=[A-Z])/g;
 let matchPropNameReg = /[a-zA-Z_]+/;
+let matchArr = /^\[.+\]$/;
 
 let parseConf = getParseConf();
 if (!parseConf.length) {
@@ -47,7 +49,9 @@ parseConf.map(curConf => {
       });
     }
     mainComponents.forEach(filePath => {
-      let result = vueDocs.parse(filePath);
+      let result = vueDocs.parse(filePath, {
+        jsx: true,
+      });
 
       // ## 修改标签名的命名方式
       if (tagNameType === 'kebab') {
@@ -65,6 +69,8 @@ parseConf.map(curConf => {
 
 function main(conf = { data: {}, lib_name: '' }) {
   let { data: componentInfoList, lib_name: libName } = conf;
+
+  console.log(`----------------- ${libName.toUpperCase()} -----------------`);
 
   const componentAttrDesMap = {};
   let snippetData = {};
@@ -89,18 +95,40 @@ function main(conf = { data: {}, lib_name: '' }) {
         let { description, tags, defaultValue, type } = props[propsKey];
 
         // ## 检测到 tags 中包含 'ignore'，退出
-        let { default: tagsDefault, ignore: tagsIgnore } = tags;
-        if (tagsIgnore && tagsIgnore.some(curItem => curItem.title === 'ignore')) return;
+        let { enum: enumTag, default: defaultTag, ignore: ignoreTag } = tags;
+        if (ignoreTag && ignoreTag.some(curItem => curItem.title === 'ignore')) return;
 
-        // ## 构造属性默认值(备注[@default] > props.default)
-        let curDefaultValue = (tagsDefault && tagsDefault.description) || (defaultValue && defaultValue.value) || '';
+        // ## 构造属性默认值(@enum > @default > props默认值)
+        // todo:
+
+        let enumList;
+        let enumSnippetNum = 1;
+
+        if (enumTag && enumTag.length) {
+          try {
+            let [enumConf] = enumTag;
+            if (enumConf.description && matchArr.test(enumConf.description)) {
+              enumList = JSON.parse(enumConf.description.replace(/'/g, '"'));
+
+              if (Array.isArray(enumList)) {
+                enumList = `\${${enumSnippetNum}:${enumList.join('|')}}`;
+                enumSnippetNum++;
+              }
+            }
+          } catch (error) {
+            console.log('error', error);
+          }
+        }
+
+        let curDefaultValue = (defaultTag && defaultTag.description) || (defaultValue && defaultValue.value) || '';
         let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName, propsKey);
+
         let kebabCasePropsKey = propsKey.replace(matchUpperCase, '-$1').toLowerCase();
-        // ## 按照 @default/props.default, 决定是否转义(:)默认值
+        // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
         componentAttrs.push(
-          `  ${
-            (type && type.name !== 'string') || defaultValueType !== 'string' ? ':' : ''
-          }${kebabCasePropsKey}="${curValue}"`
+          `  ${(type && type.name !== 'string') || defaultValueType !== 'string' ? ':' : ''}${kebabCasePropsKey}="${
+            enumList || curValue
+          }"`
         );
 
         // ## 存储备注
@@ -119,41 +147,31 @@ function main(conf = { data: {}, lib_name: '' }) {
     }
 
     // ## 为匹配属性添加备注 - Full 版本
-    // ## 为匹配属性添加备注 - Full 版本
-    let tagProps = addDescToMatchAttr({
-      attrs: componentAttrs,
-      attrToDescMap: componentAttrDesMap[componentName],
-    });
     snippetConstructor[desc].body = [
       '<!--',
       `<${displayName}`,
-      ...tagProps,
+      ...addDescToMatchAttr({
+        attrs: componentAttrs,
+        attrToDescMap: componentAttrDesMap[componentName],
+      }),
       `>`,
       ...getSlotsContent(slots),
       `<${displayName}/>`,
       '-->',
     ];
+
     Object.assign(snippetData, snippetConstructor);
+
     // ### 打印列表的存储
     componentPrefixes.push(prefix);
-
-    // todo: 新建 snippet - props 的版本
-    if (tagProps.length) {
-      let prosSnippetDesc = `${desc}-props`;
-      let prosSnippetPrefix = `${prefix}-props`;
-      let propsSnippetConstructor = getSnippetConstructor({ prefix: prosSnippetPrefix, desc: prosSnippetDesc });
-      propsSnippetConstructor[prosSnippetDesc].body = ['<!--', ...tagProps, '-->'];
-      Object.assign(snippetData, propsSnippetConstructor);
-      componentPrefixes.push(prosSnippetPrefix);
-    }
   });
 
   writeToProjectSnippets(createSnippetFileConf);
-  console.log('Snippets is in .vscode folder.');
+  // console.log('Snippets is in .vscode folder.');
 
   // ## 打印指令列表
   const PLACEHOLDER_MAX = 2;
-  console.log(`${libName} Prefix List:`);
+  console.log(`Prefix List:`);
   console.log(
     componentPrefixes
       .map((curPrefix, index) => {
@@ -166,7 +184,7 @@ function main(conf = { data: {}, lib_name: '' }) {
       })
       .join('\n')
   );
-  console.log(`---------------------------------------------------`);
+  console.log('\n');
 }
 
 /**
@@ -182,9 +200,9 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
   let result = false;
   let matchFuncArr = [
     value => matchNum.test(value) && 'number',
-    value => matchLetter.test(value) && 'string',
+    value => matchStr.test(value) && 'string',
     value => matchFunc.test(value) && 'function',
-    value => matchEmptyStr.test(value) && 'emptyString',
+    // value => matchEmptyStr.test(value) && 'emptyString',
     value => matchEmptyArr.test(value) && 'emptyArray',
     value => matchBool.test(value) && 'boolean',
   ];
@@ -201,7 +219,7 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
       defaultValue = Number.parseInt(defaultValue);
       break;
     case 'string':
-      defaultValue = defaultValue.replace(matchLetter, '$2');
+      defaultValue = defaultValue.replace(matchStr, '$1').replace(/['"]/g, '');
       break;
     case 'function':
       try {
@@ -212,9 +230,9 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
       }
       if (typeof defaultValue === 'string') defaultValue = defaultValue.replace(/"/g, "'") || '';
       break;
-    case 'emptyString':
-      defaultValue = '';
-      break;
+    // case 'emptyString':
+    //   defaultValue = '';
+    //   break;
     case 'emptyArray':
       defaultValue = [];
       break;
