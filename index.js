@@ -7,16 +7,17 @@ const path = require('path');
 const { readPkg, help } = require('./util');
 
 let matchNum = /^\d+$/;
-// let matchStr = /^"|'([a-zA-Z\/\-_#]+|[\u4e00-\u9fa5\/\-_#]+)'|"$/;
 let matchStr = /('.*'|".*")/;
 let matchFunc = /(^\(\)\s*=>.+$)|(^function\s*\(\)\s*\{.+\}$)/;
-// let matchEmptyStr = /^(''|\"\")$/;
-// let matchEmptyArr = /^\[\]$/;
 let matchBool = /^(true|false)$/;
+let matchArr = /^\[.*\]$/;
+let matchObj = /^\{.*\}$/;
+let matchUndefined = /^undefined$/;
+let matchNull = /^null$/;
+
 let matchUpperCase = /([A-Z])/g;
 let matchPascal = /([a-z]+)(?=[A-Z])/g; // 匹配大驼峰（eg: IButton）
 let matchPropNameReg = /[a-zA-Z_]+/;
-let matchArr = /^\[.*\]$/;
 let matchQuotes = /['"]+/g;
 
 let parseConf = getParseConf();
@@ -52,8 +53,10 @@ parseConf.map(curConf => {
       });
     }
 
-    await new Promise((resolve, reject) => {
-      mainComponents.forEach(async filePath => {
+    await new Promise(async (resolve, reject) => {
+      for (let i = 0; i < mainComponents.length; i++) {
+        let filePath = mainComponents[i];
+
         let result = await vueDocs
           .parse(filePath, {
             jsx: true,
@@ -67,8 +70,8 @@ parseConf.map(curConf => {
           result.displayName = result.displayName.replace(matchPascal, '$1-').toLowerCase();
         }
         componentInfoList.push(result);
-      });
-
+      }
+      // note: for 方式，在不同主机上表现一致；而 forEach 不一致
       setTimeout(resolve, 4);
     }).catch(err => console.log('err', err));
 
@@ -136,7 +139,6 @@ function main(conf = { data: {}, lib_name: '' }) {
         let curDefaultValue =
           (defaultTag && defaultTag.length && defaultTag[0].description) || (defaultValue && defaultValue.value) || '';
 
-        // todo:
         let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName, propsName);
         // ## 将驼峰props转为中划线props
         let kebabCasePropsKey = propsName.replace(matchUpperCase, '-$1').toLowerCase();
@@ -214,12 +216,15 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
   // ## 找到符合指定匹配规则的字符串
   let result = false;
   let matchFuncArr = [
-    value => matchNum.test(value) && 'number',
     value => matchStr.test(value) && 'string',
-    value => matchFunc.test(value) && 'function',
-    // value => matchEmptyStr.test(value) && 'emptyString',
-    value => matchArr.test(value) && 'array',
+    value => matchNum.test(value) && 'number',
     value => matchBool.test(value) && 'boolean',
+    value => matchUndefined.test(value) && 'undefined',
+    // todo:
+    value => matchNull.test(value) && 'null',
+    value => matchFunc.test(value) && 'function',
+    value => matchArr.test(value) && 'array',
+    value => matchObj.test(value) && 'object',
   ];
   while (matchFuncArr.length !== 0 && !result) {
     let func = matchFuncArr.pop();
@@ -243,11 +248,9 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
         console.log(`Function Parse Error. See ${componentName} ${propsKey}: ${defaultValue}`);
         defaultValue = '';
       }
+      // 对象 / 数组默认值，从一个工厂函数获取
       ({ type: result, value: defaultValue } = parseDefaultValue(defaultValue, componentName, propsKey));
       break;
-    // case 'emptyString':
-    //   defaultValue = '';
-    //   break;
     case 'array':
       defaultValue = JSON.parse(defaultValue.replace(/'/g, '"'));
       break;
