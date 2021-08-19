@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { readPkg, help } = require('./util');
 
-let matchNum = /^\d+$/;
+let matchNum = /^(\d+|-?Infinity)$/;
 let matchStr = /('.*'|".*")/;
 let matchFunc = /(^\(\)\s*=>.+$)|(^function\s*\(\)\s*\{.+\}$)/;
 let matchBool = /^(true|false)$/;
@@ -76,6 +76,7 @@ parseConf.map(curConf => {
     }).catch(err => console.log('err', err));
 
     fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
+
     main({ data: componentInfoList, lib_name: componentLibName });
   });
 });
@@ -143,6 +144,8 @@ function main(conf = { data: {}, lib_name: '' }) {
         // ## 将驼峰props转为中划线props
         let kebabCasePropsKey = propsName.replace(matchUpperCase, '-$1').toLowerCase();
         // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
+
+        // todo: 字符串转数组，在这里又转了一次字符串
         componentAttrs.push(
           `  ${
             (type && !type.name.includes('string')) || defaultValueType !== 'string' ? ':' : ''
@@ -211,7 +214,7 @@ function main(conf = { data: {}, lib_name: '' }) {
  */
 function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '') {
   // NOTE: JSDocs 返回的 defaultValue.value 是字符串，需要解决一些格式问题（单引号）
-  defaultValue = defaultValue.replace(/\n+/g, ' ').replace(/\s+/g, ' ');
+  defaultValue = defaultValue.replace(/\s+/g, ' ');
 
   // ## 找到符合指定匹配规则的字符串
   let result = false;
@@ -220,7 +223,6 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
     value => matchNum.test(value) && 'number',
     value => matchBool.test(value) && 'boolean',
     value => matchUndefined.test(value) && 'undefined',
-    // todo:
     value => matchNull.test(value) && 'null',
     value => matchFunc.test(value) && 'function',
     value => matchArr.test(value) && 'array',
@@ -236,7 +238,7 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
   // ## 转换目标
   switch (result) {
     case 'number':
-      defaultValue = Number.parseInt(defaultValue);
+      // defaultValue = Number.parseInt(defaultValue);
       break;
     case 'string':
       defaultValue = defaultValue.replace(matchStr, '$1').replace(matchQuotes, '');
@@ -252,7 +254,7 @@ function parseDefaultValue(defaultValue = '', componentName = '', propsKey = '')
       ({ type: result, value: defaultValue } = parseDefaultValue(defaultValue, componentName, propsKey));
       break;
     case 'array':
-      defaultValue = JSON.parse(defaultValue.replace(/'/g, '"'));
+      defaultValue = defaultValue.replace(/"/g, "'");
       break;
     case 'boolean':
       defaultValue = defaultValue === 'true';
