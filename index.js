@@ -8,7 +8,7 @@ const { readPkg, help } = require('./util');
 
 let matchNum = /^(\d+|-?Infinity)$/;
 let matchStr = /('.*'|".*")/;
-let matchFunc = /(^\(\)\s*=>.+$)|(^function\s*\(\)\s*\{.+\}$)/;
+let matchFunc = /(^\(\)\s*=>.+$)|(^function\s*\(.*\)\s*\{.+\}$)/;
 let matchBool = /^(true|false)$/;
 let matchArr = /^\[.*\]$/;
 let matchObj = /^\{.*\}$/;
