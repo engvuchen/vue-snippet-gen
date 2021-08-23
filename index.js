@@ -96,11 +96,10 @@ function main(conf = { data: {}, lib_name: '' }) {
   let componentPrefixes = [];
 
   componentInfoList.forEach(currentComponentInfo => {
-    let { displayName, props, events, methods, slots } = currentComponentInfo;
+    let { displayName: componentName, props, events, methods, slots } = currentComponentInfo;
 
-    let componentName = displayName.toLowerCase();
     let prefix = `${libName}-${componentName}`;
-    let desc = `@${libName} ${prefix}`;
+    let desc = `@${libName} ${componentName}`;
     let snippetConstructor = getSnippetConstructor({ prefix, desc });
 
     let componentAttrs = [];
@@ -144,8 +143,6 @@ function main(conf = { data: {}, lib_name: '' }) {
         // ## 将驼峰props转为中划线props
         let kebabCasePropsKey = propsName.replace(matchUpperCase, '-$1').toLowerCase();
         // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
-
-        // todo: 字符串转数组，在这里又转了一次字符串
         componentAttrs.push(
           `  ${
             (type && !type.name.includes('string')) || defaultValueType !== 'string' ? ':' : ''
@@ -170,14 +167,14 @@ function main(conf = { data: {}, lib_name: '' }) {
     // ## 为匹配属性添加备注 - Full 版本
     snippetConstructor[desc].body = [
       '<!--',
-      `<${displayName}`,
+      `<${componentName}`,
       ...addDescToMatchAttr({
         attrs: componentAttrs,
         attrToDescMap: componentAttrDesMap[componentName],
       }),
       `>`,
       ...getSlotsContent(slots),
-      `<${displayName}/>`,
+      `<${componentName}/>`,
       '-->',
     ];
 
@@ -328,7 +325,7 @@ function getSnippetConstructor(conf = { prefix: '', desc: '' }) {
   let { prefix, desc } = conf;
   return {
     [desc]: {
-      scope: ['javascript', 'vue'],
+      scope: ['javascript', 'vue', 'html'],
       prefix,
       description: desc,
       body: [],
