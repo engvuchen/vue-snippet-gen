@@ -7,8 +7,9 @@ function readPkg(pkgPath = '') {
 }
 function help() {
   console.log(`Usage
-  vue-snippet --version, -v    
-  vue-snippet --path <path> (--tag-kebab-case)`);
+  vue-snippet-gen --version, -v
+  vue-snippet-gen --conf (--filter)
+  vue-snippet-gen --path <path> (--tag-kebab-case)`);
 }
 
 module.exports = {

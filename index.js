@@ -20,6 +20,11 @@ let matchPascal = /([a-z]+)(?=[A-Z])/g; // 匹配大驼峰（eg: IButton）
 let matchPropNameReg = /[a-zA-Z_]+/;
 let matchQuotes = /['"]+/g;
 
+const WRITE_TARGET_PATH = `${process.cwd().replace(/\\/g, '/')}/.vscode`;
+
+const IF_FILTER = process.argv.find(curStr => curStr === '--filter');
+
+// # 获取配置
 let parseConf = getParseConf();
 if (!parseConf.length) {
   console.log('Conf is empty!');
@@ -55,7 +60,9 @@ parseConf.map(curConf => {
 
     await new Promise(async (resolve, reject) => {
       for (let i = 0; i < mainComponents.length; i++) {
-        let filePath = mainComponents[i];
+        typeof mainComponents[i] === 'object'
+          ? ({ path: filePath } = mainComponents[i])
+          : (filePath = mainComponents[i]);
 
         let result = await vueDocs
           .parse(filePath, {
@@ -67,7 +74,13 @@ parseConf.map(curConf => {
         if (tagNameType === 'kebab') {
           // 组件库 导出对象名 一般是 Pascal
           // 默认-Pascal(AbC) => kebab(ab-c)(中划线)
-          result.displayName = result.displayName.replace(matchPascal, '$1-').toLowerCase();
+          let { displayName } = result;
+
+          // todo: 可配置 alias 修改 displayName
+          if (typeof mainComponents[i] === 'object') {
+            displayName = mainComponents[i].alias || displayName;
+          }
+          result.displayName = displayName.replace(matchPascal, '$1-').toLowerCase();
         }
         componentInfoList.push(result);
       }
@@ -75,8 +88,10 @@ parseConf.map(curConf => {
       setTimeout(resolve, 4);
     }).catch(err => console.log('err', err));
 
-    fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
+    // todo:
+    // fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
 
+    // 新增或修改 main
     main({ data: componentInfoList, lib_name: componentLibName });
   });
 });
@@ -88,11 +103,18 @@ function main(conf = { data: {}, lib_name: '' }) {
 
   const componentAttrDesMap = {};
   let snippetData = {};
-  let createSnippetFileConf = {
-    path: `${process.cwd().replace(/\\/g, '/')}/.vscode`,
-    file: `${libName}.code-snippets`,
-    data: snippetData,
-  };
+  // todo:
+  /**
+   * --conf --filter: json - 仅标签属性 props；snippet - 过滤后的全部数据
+   * --conf:          仅生成备注格式的 snippet
+   */
+  let createFileConfs = [
+    {
+      path: WRITE_TARGET_PATH,
+      file: `${libName}.code-snippets`, // 全部 或 过滤
+      data: snippetData,
+    },
+  ];
   let componentPrefixes = [];
 
   componentInfoList.forEach(currentComponentInfo => {
@@ -103,57 +125,11 @@ function main(conf = { data: {}, lib_name: '' }) {
     let snippetConstructor = getSnippetConstructor({ prefix, desc });
 
     let componentAttrs = [];
-    if (props && props.length) {
-      let enumSnippetNum = 1;
-      props.forEach(propItem => {
-        // note: type 是 Vue 原生支持的校验；Boolean => boolean; [Boolean, String] => boolean|string
-        let { name: propsName, description, tags, defaultValue, type } = propItem;
+    let notShowProps = [];
+    // ## 处理 props
+    handleProps(componentName, props, componentAttrs, componentAttrDesMap, notShowProps);
 
-        // ## 检测到 tags 中包含 'ignore'，退出
-        let defaultTag;
-        let enumListStr;
-
-        if (tags) {
-          ({ default: defaultTag } = tags);
-          let { enum: enumTag, ignore: ignoreTag } = tags;
-
-          if (ignoreTag && ignoreTag.some(curItem => curItem.title === 'ignore')) return;
-
-          if (enumTag && enumTag.length) {
-            try {
-              let [enumConf] = enumTag;
-              if (enumConf.description && matchArr.test(enumConf.description)) {
-                let enumList = JSON.parse(enumConf.description.replace(/'/g, '"'));
-                if (Array.isArray(enumList)) {
-                  enumListStr = `\${${enumSnippetNum}|${enumList.join(',')}|}`;
-                  enumSnippetNum = ++enumSnippetNum;
-                }
-              }
-            } catch (error) {
-              console.log('error', error);
-            }
-          }
-        }
-
-        // ## 构造属性默认值(@enum > @default > props默认值)
-        let curDefaultValue =
-          (defaultTag && defaultTag.length && defaultTag[0].description) || (defaultValue && defaultValue.value) || '';
-
-        let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName, propsName);
-        // ## 将驼峰props转为中划线props
-        let kebabCasePropsKey = propsName.replace(matchUpperCase, '-$1').toLowerCase();
-        // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
-        componentAttrs.push(
-          `  ${
-            (type && !type.name.includes('string')) || defaultValueType !== 'string' ? ':' : ''
-          }${kebabCasePropsKey}="${enumListStr || curValue}"`
-        );
-
-        // ## 存储备注
-        if (!componentAttrDesMap[componentName]) componentAttrDesMap[componentName] = {};
-        componentAttrDesMap[componentName][kebabCasePropsKey] = description;
-      });
-    }
+    // ## 处理 events
     if (events && events.length) {
       events.forEach(eventItem => {
         let { name: eventName, description } = eventItem;
@@ -164,7 +140,10 @@ function main(conf = { data: {}, lib_name: '' }) {
       });
     }
 
+    // todo: componentAttrs
+
     // ## 为匹配属性添加备注 - Full 版本
+    // todo: 不使用备注，而是过滤过的 标签
     snippetConstructor[desc].body = [
       '<!--',
       `<${componentName}`,
@@ -177,14 +156,31 @@ function main(conf = { data: {}, lib_name: '' }) {
       `<${componentName}/>`,
       '-->',
     ];
-
     Object.assign(snippetData, snippetConstructor);
+
+    if (IF_FILTER) {
+      // componentAttrs = componentAttrs.filter(curStr => {
+      //   let [, propsName] = curStr.exec(/[:@]?(\w+)(?==)/) || [];
+      //   if (!notShowProps.includes(propsName)) return true;
+      // });
+      let propsJSON = [
+        ...addDescToMatchAttr({
+          attrs: componentAttrs,
+          attrToDescMap: componentAttrDesMap[componentName],
+        }),
+      ];
+      createFileConfs.push({
+        path: WRITE_TARGET_PATH,
+        file: `${libName}.json`, // 仅 props 部分
+        data: snippetData,
+      });
+    }
 
     // ### 打印列表的存储
     componentPrefixes.push(prefix);
   });
 
-  writeToProjectSnippets(createSnippetFileConf);
+  writeToProjectSnippets(createFileConfs);
 
   // ## 打印指令列表
   const PLACEHOLDER_MAX = 2;
@@ -204,8 +200,62 @@ function main(conf = { data: {}, lib_name: '' }) {
   console.log('\n');
 }
 
+function handleProps(componentName = '', props = [], attrs = [], commentMap = {}, notShowProps = []) {
+  if (props && props.length) {
+    let enumSnippetNum = 1;
+    props.forEach(propItem => {
+      // note: type 是 Vue 原生支持的校验; Boolean => boolean; [Boolean, String] => boolean|string
+      let { name: propsName, description, tags, defaultValue, type } = propItem;
+
+      let defaultTag;
+      let enumListStr;
+
+      if (tags) {
+        ({ default: defaultTag } = tags);
+        let { enum: enumTag, ignore: ignoreTag, not_show: notShowTag } = tags;
+
+        // ## 处理 @ignore
+        if (ignoreTag && ignoreTag.some(curItem => curItem.title === 'ignore')) return;
+
+        // ## 处理 @enum
+        if (enumTag && enumTag.length) {
+          try {
+            let [enumConf] = enumTag;
+            if (enumConf.description && matchArr.test(enumConf.description)) {
+              let enumList = JSON.parse(enumConf.description.replace(/'/g, '"'));
+              if (Array.isArray(enumList)) {
+                enumListStr = `\${${enumSnippetNum}|${enumList.join(',')}|}`;
+                enumSnippetNum = ++enumSnippetNum;
+              }
+            }
+          } catch (error) {
+            console.log('error', error);
+          }
+        }
+      }
+
+      // ## 构造属性默认值(@enum > @default > props默认值)
+      let curDefaultValue =
+        (defaultTag && defaultTag.length && defaultTag[0].description) || (defaultValue && defaultValue.value) || '';
+      let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName, propsName);
+      // ## 转换 props 格式（驼峰 -> 中划线）
+      let kebabCasePropsKey = propsName.replace(matchUpperCase, '-$1').toLowerCase();
+      // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
+      attrs.push(`  ${getVueCommand(type, defaultValueType)}${kebabCasePropsKey}="${enumListStr || curValue}"`);
+
+      // ## 存储备注
+      if (!commentMap[componentName]) commentMap[componentName] = {};
+      commentMap[componentName][kebabCasePropsKey] = description;
+
+      // ## 处理 @not_show
+      if (notShowTag && IF_FILTER) {
+        notShowProps.push(propsName);
+      }
+    });
+  }
+}
 /**
- *
+ * 解析默认值
  * @param {String} defaultValue
  * @returns {Object} result {type: '', value: ''}
  */
@@ -284,6 +334,16 @@ function getSlotsContent(slots) {
 
   return result;
 }
+/**
+ * 获取 Vue 指令（:@）
+ * @param {Object} type prop 的属性地址
+ * @param {String} defaultValueType 根据字符串进行判断
+ * @returns {String} result
+ */
+function getVueCommand(type, defaultValueType) {
+  return (type && !type.name.includes('string')) || defaultValueType !== 'string' ? ':' : '';
+}
+
 /**
  * 为匹配属性添加备注；返回一个操作后的字符串数组
  * @param {object} conf {body: [], attrToDescMap: [] }
