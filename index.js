@@ -22,7 +22,7 @@ let matchQuotes = /['"]+/g;
 
 const WRITE_TARGET_PATH = `${process.cwd().replace(/\\/g, '/')}/.vscode`;
 
-const IF_FILTER = process.argv.find(curStr => curStr === '--filter');
+const IS_FILTER = process.argv.find(curStr => curStr === '--filter');
 
 // # 获取配置
 let parseConf = getParseConf();
@@ -101,11 +101,12 @@ function main(conf = { data: {}, lib_name: '' }) {
 
   console.log(`----------------- ${libName.toUpperCase()} -----------------`);
 
-  const componentAttrDesMap = {};
+  const attrToDesMap = {};
   let snippetData = {};
+  let jsonData = {};
   // todo:
   /**
-   * --conf --filter: json - 仅标签属性 props；snippet - 过滤后的全部数据
+   * --conf --filter: json - 仅标签属性 props；snippet - 没有备注/过滤
    * --conf:          仅生成备注格式的 snippet
    */
   let createFileConfs = [
@@ -122,65 +123,57 @@ function main(conf = { data: {}, lib_name: '' }) {
 
     let prefix = `${libName}-${componentName}`;
     let desc = `@${libName} ${componentName}`;
-    let snippetConstructor = getSnippetConstructor({ prefix, desc });
+    let snippet = getSnippet({ prefix, desc });
 
-    let componentAttrs = [];
-    let notShowProps = [];
+    let attrsForSnippet = [];
+    let attrsForJSON = [];
     // ## 处理 props
-    handleProps(componentName, props, componentAttrs, componentAttrDesMap, notShowProps);
-
+    handleProps(componentName, props, attrsForSnippet, attrsForJSON, attrToDesMap);
     // ## 处理 events
-    if (events && events.length) {
-      events.forEach(eventItem => {
-        let { name: eventName, description } = eventItem;
+    handleEvent(componentName, events, attrsForSnippet, attrsForJSON, attrToDesMap);
 
-        componentAttrs.push(`  @${eventName}=""`);
-        if (!componentAttrDesMap[componentName]) componentAttrDesMap[componentName] = {};
-        componentAttrDesMap[componentName][eventName] = description;
-      });
-    }
+    // ## 为匹配属性添加备注
 
-    // todo: componentAttrs
+    // todo: 不使用备注 / 属性需经过滤
+    let newAttrs = !IS_FILTER
+      ? addDescToMatchAttr({
+          attrs: attrsForSnippet,
+          attrToDescMap: attrToDesMap[componentName],
+        })
+      : attrsForSnippet;
 
-    // ## 为匹配属性添加备注 - Full 版本
-    // todo: 不使用备注，而是过滤过的 标签
-    snippetConstructor[desc].body = [
+    snippet[desc].body = [
       '<!--',
       `<${componentName}`,
-      ...addDescToMatchAttr({
-        attrs: componentAttrs,
-        attrToDescMap: componentAttrDesMap[componentName],
-      }),
+      ...newAttrs,
       `>`,
       ...getSlotsContent(slots),
       `<${componentName}/>`,
       '-->',
     ];
-    Object.assign(snippetData, snippetConstructor);
+    Object.assign(snippetData, snippet);
 
-    if (IF_FILTER) {
-      // componentAttrs = componentAttrs.filter(curStr => {
-      //   let [, propsName] = curStr.exec(/[:@]?(\w+)(?==)/) || [];
-      //   if (!notShowProps.includes(propsName)) return true;
-      // });
-      let propsJSON = [
-        ...addDescToMatchAttr({
-          attrs: componentAttrs,
-          attrToDescMap: componentAttrDesMap[componentName],
-        }),
-      ];
-      createFileConfs.push({
-        path: WRITE_TARGET_PATH,
-        file: `${libName}.json`, // 仅 props 部分
-        data: snippetData,
+    if (IS_FILTER) {
+      let newSnippet = getSnippet({ prefix, desc });
+      newSnippet[desc].body = addDescToMatchAttr({
+        attrs: attrsForSnippet,
+        attrToDescMap: attrToDesMap[componentName],
       });
+      Object.assign(jsonData, newSnippet);
     }
 
     // ### 打印列表的存储
     componentPrefixes.push(prefix);
   });
 
-  writeToProjectSnippets(createFileConfs);
+  if (IS_FILTER) {
+    createFileConfs.push({
+      path: WRITE_TARGET_PATH,
+      file: `${libName}.json`, // 全部的 props 部分
+      data: attrsForJSON,
+    });
+  }
+  createFileConfs.forEach(curItem => writeToProjectSnippets(createFileConfs));
 
   // ## 打印指令列表
   const PLACEHOLDER_MAX = 2;
@@ -200,7 +193,7 @@ function main(conf = { data: {}, lib_name: '' }) {
   console.log('\n');
 }
 
-function handleProps(componentName = '', props = [], attrs = [], commentMap = {}, notShowProps = []) {
+function handleProps(componentName = '', props = [], attrsForSnippet = [], attrsForJSON = [], attrToDesMap = {}) {
   if (props && props.length) {
     let enumSnippetNum = 1;
     props.forEach(propItem => {
@@ -209,6 +202,7 @@ function handleProps(componentName = '', props = [], attrs = [], commentMap = {}
 
       let defaultTag;
       let enumListStr;
+      let isNotShow = false;
 
       if (tags) {
         ({ default: defaultTag } = tags);
@@ -232,28 +226,57 @@ function handleProps(componentName = '', props = [], attrs = [], commentMap = {}
             console.log('error', error);
           }
         }
+
+        if (notShowTag) isNotShow = true;
       }
 
       // ## 构造属性默认值(@enum > @default > props默认值)
       let curDefaultValue =
         (defaultTag && defaultTag.length && defaultTag[0].description) || (defaultValue && defaultValue.value) || '';
       let { type: defaultValueType, value: curValue } = parseDefaultValue(curDefaultValue, componentName, propsName);
-      // ## 转换 props 格式（驼峰 -> 中划线）
+      // ## 转换 props 格式（驼峰 -> 中划线/小写）
       let kebabCasePropsKey = propsName.replace(matchUpperCase, '-$1').toLowerCase();
       // ## 按照 props_default 或者 自定义的默认值类型，决定是否转义默认值
-      attrs.push(`  ${getVueCommand(type, defaultValueType)}${kebabCasePropsKey}="${enumListStr || curValue}"`);
+      let propsStr = `  ${getVueCommand(type, defaultValueType)}${kebabCasePropsKey}="${enumListStr || curValue}"`;
+
+      if (!IS_FILTER || !isNotShow) {
+        attrsForSnippet.push(propsStr);
+      }
+      if (IS_FILTER && attrsForJSON && attrsForJSON.length) {
+        attrsForJSON.push(propsStr);
+      }
 
       // ## 存储备注
-      if (!commentMap[componentName]) commentMap[componentName] = {};
-      commentMap[componentName][kebabCasePropsKey] = description;
+      if (!attrToDesMap[componentName]) attrToDesMap[componentName] = {};
+      attrToDesMap[componentName][kebabCasePropsKey] = description;
 
-      // ## 处理 @not_show
-      if (notShowTag && IF_FILTER) {
-        notShowProps.push(propsName);
-      }
+      registerForDesMap(componentName, kebabCasePropsKey, description);
     });
   }
 }
+function handleEvent(componentName = '', events = [], attrsForSnippet = [], attrsForJSON = [], attrToDesMap = {}) {
+  if (events && events.length) {
+    // todo: 事件也可以筛选吗？
+    events.forEach(eventItem => {
+      let { name: eventName, tags, description } = eventItem;
+
+      let isNotShow = false;
+      if (tags) {
+        let { ignore: ignoreTag, not_show: notShowTag } = tags;
+        if (ignoreTag && ignoreTag.some(curItem => curItem.title === 'ignore')) return;
+      }
+      let eventStr = `  @${eventName}=""`;
+      if (!IS_FILTER || !isNotShow) {
+        attrsForSnippet.push(eventStr);
+      }
+      if (IS_FILTER) attrsForJSON.push(eventStr);
+
+      if (!attrToDesMap[componentName]) attrToDesMap[componentName] = {};
+      attrToDesMap[componentName][eventName] = description;
+    });
+  }
+}
+
 /**
  * 解析默认值
  * @param {String} defaultValue
@@ -381,7 +404,7 @@ function addDescToMatchAttr(conf = { tags: [], attrToDescMap: {} }) {
  * @param {object} conf
  * @returns {object} result { [desc]: { ... } }
  */
-function getSnippetConstructor(conf = { prefix: '', desc: '' }) {
+function getSnippet(conf = { prefix: '', desc: '' }) {
   let { prefix, desc } = conf;
   return {
     [desc]: {
