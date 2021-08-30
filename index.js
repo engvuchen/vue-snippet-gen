@@ -291,7 +291,7 @@ function assignNewToSnippets(
     withComment: true,
   }
 ) {
-  let { snippet, attrs, attrToDescMap, snippets, slots, withTag, withComment } = conf;
+  let { snippet, attrs, attrToDescMap, snippets, slots, componentName, withTag, withComment } = conf;
 
   let newAttrs = attrs;
   if (withComment) {
