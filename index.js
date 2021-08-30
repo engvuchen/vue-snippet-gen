@@ -1,7 +1,6 @@
 'use strict';
 
 const vueDocs = require('vue-docgen-api');
-const rd = require('rd');
 const fs = require('fs');
 const path = require('path');
 const { readPkg, help } = require('./util');
@@ -50,7 +49,10 @@ parseConf.map(curConf => {
     }
 
     if (mainComponents.length) {
-      mainComponents = mainComponents.map(curPath => `${componentDirPath}/${curPath.replace(/\\/g, '/')}`);
+      mainComponents = mainComponents.map(curItem => {
+        curItem.path = `${componentDirPath}/${curItem.path.replace(/\\/g, '/')}`;
+        return curItem;
+      });
     } else {
       rd.eachFileFilterSync(`${componentDirPath}`, /\.vue$/, (filePath, stats) => {
         mainComponents.push(filePath);
@@ -59,21 +61,21 @@ parseConf.map(curConf => {
 
     await new Promise(async (resolve, reject) => {
       for (let i = 0; i < mainComponents.length; i++) {
-        let curConf = typeof mainComponents[i] === 'object' ? mainComponents[i] : { path: mainComponents[i] };
-        let { path: filePath } = curConf;
+        let curConf = mainComponents[i];
 
+        let { path: filePath, alias } = curConf;
         let result = await vueDocs
           .parse(filePath, {
             jsx: true,
           })
           .catch(err => console.log('err'));
 
+        if (alias) result.displayName = alias;
+
         // ## 修改标签名的命名方式
         if (tagNameType === 'kebab') {
           // 组件库 导出对象名 一般是 Pascal; 默认-Pascal(AbC) => kebab(ab-c)(中划线)
           let { displayName } = result;
-          // todo: 可配置 alias 修改 displayName
-          displayName = curConf.alias || displayName;
           result.displayName = displayName.replace(matchPascal, '$1-').toLowerCase();
         }
         componentInfoList.push(result);
@@ -95,11 +97,66 @@ function main(conf = { data: {}, lib_name: '' }) {
   const componentToAttrDescMap = {};
   let snippetData = {};
   let jsonData = {};
-  // todo:
-  /**
-   * --conf --filter: json - 仅标签属性 props；snippet - 没有备注/过滤
-   * --conf:          仅生成备注格式的 snippet
-   */
+  let componentPrefixes = [];
+
+  componentInfoList.forEach(currentComponentInfo => {
+    let { displayName: componentName, props, events, methods, slots } = currentComponentInfo;
+
+    let attrsForSnippet = [];
+    let attrsForJSON = [];
+    if (!componentToAttrDescMap[componentName]) componentToAttrDescMap[componentName] = {};
+    let { [componentName]: attrToDescMap } = componentToAttrDescMap;
+
+    let propsConf = {
+      componentName,
+      props,
+      attrsForSnippet,
+      attrToDescMap,
+    };
+    let eventConf = {
+      componentName,
+      events,
+      attrsForSnippet,
+      attrToDescMap,
+    };
+    if (IS_FILTER) {
+      [propsConf, eventConf].forEach(curConf =>
+        Object.assign(curConf, {
+          attrsForJSON,
+        })
+      );
+    }
+    handleProps(propsConf);
+    handleEvent(eventConf);
+
+    let prefix = `${libName}-${componentName}`;
+    let desc = `@${libName} ${componentName}`;
+    let assignConfs = [
+      {
+        snippet: getSnippet({ prefix, desc }),
+        attrs: attrsForSnippet,
+        slots,
+        attrToDescMap,
+        snippets: snippetData,
+        componentName,
+        isFilter: IS_FILTER,
+      },
+    ];
+    if (IS_FILTER) {
+      assignConfs.push({
+        snippet: getSnippet({ prefix, desc }),
+        attrs: attrsForJSON,
+        attrToDescMap,
+        snippets: jsonData,
+        isFilter: IS_FILTER,
+      });
+    }
+    assignConfs.forEach(curConf => assignNewToSnippets(curConf));
+
+    // ### 推入打印列表存储
+    componentPrefixes.push(prefix);
+  });
+
   let createFileConfs = [
     {
       path: WRITE_TARGET_PATH,
@@ -115,65 +172,7 @@ function main(conf = { data: {}, lib_name: '' }) {
     });
   }
 
-  let componentPrefixes = [];
-
-  componentInfoList.forEach(currentComponentInfo => {
-    let { displayName: componentName, props, events, methods, slots } = currentComponentInfo;
-
-    let prefix = `${libName}-${componentName}`;
-    let desc = `@${libName} ${componentName}`;
-    let snippet = getSnippet({ prefix, desc });
-
-    let attrsForSnippet = [];
-    let attrsForJSON = [];
-    if (!componentToAttrDescMap[componentName]) componentToAttrDescMap[componentName] = {};
-    let { componentName: attrToDescMap } = componentToAttrDescMap;
-
-    let propsConf = {
-      componentName,
-      props,
-      attrsForSnippet,
-      attrToDescMap,
-    };
-    let eventConf = {
-      componentName,
-      events,
-      attrsForSnippet,
-      attrToDescMap,
-    };
-    if (IS_FILTER) {
-      [propsConf, eventConf].forEach(curItem =>
-        Object.assign(curItem, {
-          attrsForJSON,
-        })
-      );
-    }
-    handleProps(propsConf);
-    handleEvent(eventConf);
-
-    assignNewToSnippets({
-      snippet,
-      attrs: attrsForSnippet,
-      attrToDescMap,
-      snippets: snippetData,
-      componentName,
-      isFilter: IS_FILTER,
-    });
-    if (IS_FILTER) {
-      assignNewToSnippets({
-        snippet: getSnippet({ prefix, desc }),
-        attrs: attrsForSnippet,
-        attrToDescMap,
-        snippets: jsonData,
-        isFilter: IS_FILTER,
-      });
-    }
-
-    // ### 推入打印列表存储
-    componentPrefixes.push(prefix);
-  });
-
-  createFileConfs.forEach(curItem => writeToProjectSnippets(createFileConfs));
+  createFileConfs.forEach(curItem => writeToProjectSnippets(curItem));
 
   // ## 打印指令列表
   const PLACEHOLDER_MAX = 2;
@@ -253,19 +252,21 @@ function handleProps(
       if (attrsForJSON) attrsForJSON.push(propsStr);
 
       // ## 存储备注
+      // todo:
       attrToDescMap[kebabCasePropsKey] = description;
     });
   }
 }
 function handleEvent(
   conf = {
-    componentName: '',
     events: [],
     attrsForSnippet: [],
     attrToDescMap: {},
     attrsForJSON: [],
   }
 ) {
+  let { events, attrsForSnippet, attrToDescMap, attrsForJSON } = conf;
+
   if (events && events.length) {
     // todo: 事件也可以筛选
     events.forEach(eventItem => {
@@ -281,7 +282,7 @@ function handleEvent(
       if (isShow) attrsForSnippet.push(eventStr);
       if (attrsForJSON) attrsForJSON.push(eventStr);
 
-      attrToDescMap[componentName][eventName] = description;
+      attrToDescMap[eventName] = description;
     });
   }
 }
@@ -292,10 +293,11 @@ function assignNewToSnippets(
     attrToDescMap: {},
     snippets: {},
     componentName: '',
+    slots: [],
     isFilter: false,
   }
 ) {
-  let { snippet, attrs, attrToDescMap, snippets, componentName, isFilter } = conf;
+  let { snippet, attrs, attrToDescMap, snippets, slots, componentName, isFilter } = conf;
 
   let newAttrs = attrs;
   if (!isFilter) {
@@ -304,16 +306,16 @@ function assignNewToSnippets(
       attrToDescMap,
     });
   }
-  snippet.body = newAttrs;
+  let desc = Object.keys(snippet).pop();
+  snippet[desc].body = newAttrs;
   let isTag = componentName;
   if (isTag) {
-    let desc = Object.keys(snippet).pop();
     snippet[desc].body = [
       '<!--',
       `<${componentName}`,
       ...newAttrs,
       `>`,
-      ...getSlotsContent(slots),
+      ...(!isFilter ? getSlotsContent(slots || []) : []),
       `<${componentName}/>`,
       '-->',
     ];
@@ -460,7 +462,7 @@ function getSnippet(conf = { prefix: '', desc: '' }) {
   };
 }
 function afterInitDirAndFile(conf) {
-  let { path: curPath, file: curFilePath, success: successCallBack, error: errorCallBack, data } = conf;
+  let { path: curPath, file: curFilePath, success: successCallBack, error: errorCallBack } = conf;
 
   let fileExistPath = path.resolve(__dirname, curPath, curFilePath);
   Object.assign(conf, { file_exist_path: fileExistPath });
@@ -506,42 +508,35 @@ function writeToProjectSnippets(conf = { path: '', file: '', data: {} }) {
  * returns {Array} parseConf [ {*path: '', tagNameType: '',(默认 kebab), mainComponents: []} ]
  */
 function getParseConf() {
-  // note: 命令仅支持 path / --tag-kebab-case(默认origin，参数无效不处理), 会解析所有 vue 文件；配置以命令行优先
-  let processArgs = process.argv;
-
   let parseConf = [];
-  if (processArgs.length && processArgs.indexOf('--conf') === -1) {
-    let curConf = {
-      path: '',
-      tagNameType: 'origin',
-      mainComponents: [],
-    };
-    let tagNameTypeIndex = processArgs.indexOf('--tag-kebab-case');
-    if (tagNameTypeIndex > -1) {
-      curConf.tagNameType = 'kebab';
-      processArgs.splice(tagNameTypeIndex, 1);
-    }
-    let [, , , componentDir] = processArgs;
-    curConf.path = componentDir || '';
-
-    parseConf.push(curConf);
-  } else {
-    let pkgConf = readPkg()['vue-snippet-gen'] || [];
-    if (Array.isArray(pkgConf) && pkgConf.length) {
-      parseConf = pkgConf.map(curItem => {
-        [
-          { key: 'path', defaultValue: '', target: curItem },
-          { key: 'tagNameType', defaultValue: 'origin', target: curItem },
-          { key: 'mainComponents', defaultValue: [], target: curItem },
-        ].forEach(curItem => {
-          let { key, defaultValue, target } = curItem;
-          if (target[key] === undefined) target[key] = defaultValue;
-        });
-        curItem.mainComponents.forEach(name => (name = name.toLowerCase()));
-
-        return curItem;
+  let pkgConf = readPkg()['vue-snippet-gen'] || [];
+  if (Array.isArray(pkgConf) && pkgConf.length) {
+    parseConf = pkgConf.map(curItem => {
+      [
+        { key: 'path', defaultValue: '', target: curItem },
+        { key: 'tagNameType', defaultValue: 'origin', target: curItem },
+        { key: 'mainComponents', defaultValue: [], target: curItem },
+      ].forEach(curItem => {
+        let { key, defaultValue, target } = curItem;
+        if (target[key] === undefined) target[key] = defaultValue;
       });
-    }
+
+      let newMainComponents = [];
+      let { mainComponents } = curItem;
+      mainComponents.forEach(curItem => {
+        if (typeof curItem !== 'object') {
+          newMainComponents.push({ path: curItem });
+        } else {
+          newMainComponents.push(curItem);
+        }
+      });
+      newMainComponents.forEach(curItem => {
+        curItem.path = curItem.path.toLowerCase();
+      });
+      curItem.mainComponents = newMainComponents;
+
+      return curItem;
+    });
   }
 
   return parseConf;

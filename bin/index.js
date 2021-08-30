@@ -4,9 +4,6 @@ const { readPkg, help } = require('../util');
 const path = require('path');
 
 const cmds = {
-  '--path': () => {
-    require('../index');
-  },
   '--conf': () => {
     require('../index');
   },
