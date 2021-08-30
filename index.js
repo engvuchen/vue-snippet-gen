@@ -143,8 +143,8 @@ function main(conf = { data: {}, lib_name: '' }) {
         attrs: attrsForJSON,
         attrToDescMap,
         snippets: jsonData,
-        withComment: true,
         withTag: false,
+        withComment: true,
       });
     }
     assignConfs.forEach(curConf => assignNewToSnippets(curConf));
