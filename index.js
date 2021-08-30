@@ -53,10 +53,6 @@ parseConf.map(curConf => {
         curItem.path = `${componentDirPath}/${curItem.path.replace(/\\/g, '/')}`;
         return curItem;
       });
-    } else {
-      rd.eachFileFilterSync(`${componentDirPath}`, /\.vue$/, (filePath, stats) => {
-        mainComponents.push(filePath);
-      });
     }
 
     await new Promise(async (resolve, reject) => {
@@ -101,8 +97,8 @@ function main(conf = { data: {}, lib_name: '' }) {
   let jsonData = {};
   let componentPrefixes = [];
 
-  componentInfoList.forEach(currentComponentInfo => {
-    let { displayName: componentName, props, events, methods, slots } = currentComponentInfo;
+  componentInfoList.forEach(curComponentInfo => {
+    let { displayName: componentName, props, events, methods, slots } = curComponentInfo;
 
     let attrsForSnippet = [];
     let attrsForJSON = [];
@@ -137,7 +133,8 @@ function main(conf = { data: {}, lib_name: '' }) {
         attrToDescMap,
         snippets: snippetData,
         componentName,
-        isFilter: IS_FILTER,
+        withTag: true,
+        withComment: !IS_FILTER ? true : false,
       },
     ];
     if (IS_FILTER) {
@@ -146,7 +143,8 @@ function main(conf = { data: {}, lib_name: '' }) {
         attrs: attrsForJSON,
         attrToDescMap,
         snippets: jsonData,
-        isFilter: IS_FILTER,
+        withComment: true,
+        withTag: false,
       });
     }
     assignConfs.forEach(curConf => assignNewToSnippets(curConf));
@@ -289,13 +287,13 @@ function assignNewToSnippets(
     snippets: {},
     componentName: '',
     slots: [],
-    isFilter: false,
+    withTag: true,
+    withComment: true,
   }
 ) {
-  let { snippet, attrs, attrToDescMap, snippets, slots, componentName, isFilter } = conf;
+  let { snippet, attrs, attrToDescMap, snippets, slots, withTag, withComment } = conf;
 
   let newAttrs = attrs;
-  let withComment = !isFilter;
   if (withComment) {
     newAttrs = addDescToMatchAttr({
       attrs,
@@ -304,18 +302,21 @@ function assignNewToSnippets(
   }
   let desc = Object.keys(snippet).pop();
   snippet[desc].body = newAttrs;
-  if (withComment) {
-    snippet[desc].body = [
-      '<!--',
-      `<${componentName}`,
-      ...newAttrs,
-      `>`,
-      ...(!isFilter ? getSlotsContent(slots || []) : []),
-      `<${componentName}/>`,
-      '-->',
-    ];
-  } else if (componentName) {
-    snippet[desc].body = [`<${componentName}`, ...newAttrs, `>`, `<${componentName}/>`];
+
+  if (withTag) {
+    if (withComment) {
+      snippet[desc].body = [
+        '<!--',
+        `<${componentName}`,
+        ...newAttrs,
+        `>`,
+        ...getSlotsContent(slots || []),
+        `<${componentName}/>`,
+        '-->',
+      ];
+    } else {
+      snippet[desc].body = [`<${componentName}`, ...newAttrs, `>`, `<${componentName}/>`];
+    }
   }
   Object.assign(snippets, snippet);
 }
