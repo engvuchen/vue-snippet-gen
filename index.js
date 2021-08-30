@@ -86,6 +86,8 @@ parseConf.map(curConf => {
 
     // 新增或修改 main
     main({ data: componentInfoList, lib_name: componentLibName });
+
+    fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
   });
 });
 
@@ -120,11 +122,7 @@ function main(conf = { data: {}, lib_name: '' }) {
       attrToDescMap,
     };
     if (IS_FILTER) {
-      [propsConf, eventConf].forEach(curConf =>
-        Object.assign(curConf, {
-          attrsForJSON,
-        })
-      );
+      [propsConf, eventConf].forEach(curConf => Object.assign(curConf, { attrsForJSON }));
     }
     handleProps(propsConf);
     handleEvent(eventConf);
@@ -211,11 +209,10 @@ function handleProps(
 
       let defaultTag;
       let enumListStr;
-      let isShow = true;
-
+      let isShow = !IS_FILTER; // 关，全显示；开，部分显示
       if (tags) {
         ({ default: defaultTag } = tags);
-        let { enum: enumTag, ignore: ignoreTag, not_show: notShowTag } = tags;
+        let { enum: enumTag, ignore: ignoreTag, show: showTag } = tags;
 
         // ## 处理 @ignore
         if (ignoreTag && ignoreTag.some(curItem => curItem.title === 'ignore')) return;
@@ -236,7 +233,7 @@ function handleProps(
           }
         }
 
-        if (notShowTag) isShow = false;
+        if (showTag) isShow = true;
       }
 
       // ## 构造属性默认值(@enum > @default > props默认值)
@@ -252,7 +249,6 @@ function handleProps(
       if (attrsForJSON) attrsForJSON.push(propsStr);
 
       // ## 存储备注
-      // todo:
       attrToDescMap[kebabCasePropsKey] = description;
     });
   }
@@ -268,15 +264,14 @@ function handleEvent(
   let { events, attrsForSnippet, attrToDescMap, attrsForJSON } = conf;
 
   if (events && events.length) {
-    // todo: 事件也可以筛选
     events.forEach(eventItem => {
       let { name: eventName, tags, description } = eventItem;
 
-      let isShow = true;
+      let isShow = !IS_FILTER;
       if (tags) {
-        let { ignore: ignoreTag, not_show: notShowTag } = tags;
+        let { ignore: ignoreTag, show: showTag } = tags;
         if (ignoreTag && ignoreTag.some(curItem => curItem.title === 'ignore')) return;
-        if (notShowTag) isShow = false;
+        if (showTag) isShow = true;
       }
       let eventStr = `  @${eventName}=""`;
       if (isShow) attrsForSnippet.push(eventStr);
@@ -300,7 +295,8 @@ function assignNewToSnippets(
   let { snippet, attrs, attrToDescMap, snippets, slots, componentName, isFilter } = conf;
 
   let newAttrs = attrs;
-  if (!isFilter) {
+  let withComment = !isFilter;
+  if (withComment) {
     newAttrs = addDescToMatchAttr({
       attrs,
       attrToDescMap,
@@ -308,8 +304,7 @@ function assignNewToSnippets(
   }
   let desc = Object.keys(snippet).pop();
   snippet[desc].body = newAttrs;
-  let isTag = componentName;
-  if (isTag) {
+  if (withComment) {
     snippet[desc].body = [
       '<!--',
       `<${componentName}`,
@@ -319,6 +314,8 @@ function assignNewToSnippets(
       `<${componentName}/>`,
       '-->',
     ];
+  } else if (componentName) {
+    snippet[desc].body = [`<${componentName}`, ...newAttrs, `>`, `<${componentName}/>`];
   }
   Object.assign(snippets, snippet);
 }
