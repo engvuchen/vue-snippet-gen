@@ -21,6 +21,7 @@ let matchQuotes = /['"]+/g;
 
 const WRITE_TARGET_PATH = `${process.cwd().replace(/\\/g, '/')}/.vscode`;
 const IS_FILTER = process.argv.find(curStr => curStr === '--filter');
+const IS_DEBUG = process.argv.find(curStr => curStr === '--debug');
 
 let parseConf = getParseConf();
 if (!parseConf.length) {
@@ -83,7 +84,9 @@ parseConf.map(curConf => {
     // 新增或修改 main
     main({ data: componentInfoList, lib_name: componentLibName });
 
-    fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
+    if (IS_DEBUG) {
+      fs.writeFileSync(`${process.cwd()}/${componentLibName}.json`, JSON.stringify(componentInfoList, undefined, 4));
+    }
   });
 });
 
