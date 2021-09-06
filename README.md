@@ -23,12 +23,13 @@ npm install vue-docgen-api --save-dev
 npx vue-snippet-gen --conf --filter
 ```
 
-产物：
+**产物**
 
 1. `.code-snippet` 文件，负责控制初始标签的显示；
 2. `.json` 文件，负责为 `vue-ui-kit-helper` 提供自动补全的数据源。
 
-效果：
+**效果**
+
 ![演示-vue-ui-kit-helper.gif](https://i.loli.net/2021/09/06/qZB4IKN65jzHpdn.gif)
 
 ### --conf
@@ -40,7 +41,8 @@ npx vue-snippet-gen --conf --filter
 npx vue-snippet-gen --conf
 ```
 
-效果：
+**效果**
+
 ![演示-vue-snippet-gen-conf.gif](https://i.loli.net/2021/09/06/xDVM1rLeYqKtPzS.gif)
 
 ## JSDocs 标记支持
