@@ -4,6 +4,7 @@
 
 ## 安装
 
+推荐以 NPX 方式调用。
 ```bash
 npm install vue-docgen-api --save-dev
 ```
@@ -48,9 +49,14 @@ npx vue-snippet-gen --conf
 ## JSDocs 标记支持
 
 1. description - 不带标注的备注。
-2. @enum - snippet 选项列表。
-3. @ignore - 忽略该属性/方法的解析。`--conf` / `--filter`，均不可见。
-4. @default - 修改默认值。
-5. @show - 仅 --filter 支持
+2. `@enum` - 默认值列表。
+4. `@default` - 修改默认值。
+5. `@show` - 在 `--filter` 模式下，显示指定的属性、方法。
+3. `@ignore` - 忽略该属性/方法/slot的解析。`--conf` / `--filter`，均不可见。
 
-标记优先级: `@enum` > `@default` > 文件 `props` `default`
+**默认值优先级**
+
+`@enum` > `@default` > 文件明文 `default`
+
+![标记演示.png](https://i.loli.net/2021/09/12/BpmJjvP5bM1UwfR.png)
+
