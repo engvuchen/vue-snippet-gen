@@ -314,11 +314,11 @@ function assignNewToSnippets(
         ...newAttrs,
         `>`,
         ...getSlotsContent(slots || []),
-        `<${componentName}/>`,
+        `</${componentName}>`,
         '-->',
       ];
     } else {
-      snippet[desc].body = [`<${componentName}`, ...newAttrs, `>`, `<${componentName}/>`];
+      snippet[desc].body = [`<${componentName}`, ...newAttrs, `>`, `</${componentName}>`];
     }
   }
   Object.assign(snippets, snippet);
