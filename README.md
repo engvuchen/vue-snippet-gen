@@ -5,8 +5,9 @@
 ## 安装
 
 推荐以 NPX 方式调用。
+
 ```bash
-npm install vue-docgen-api --save-dev
+npm install vue-snippet-gen --save-dev
 ```
 
 ## 配置
@@ -17,8 +18,8 @@ npm install vue-docgen-api --save-dev
 
 ### --filter
 
-1. 配合 [vue-ui-kit-helper](https://marketplace.visualstudio.com/items?itemName=engvuchen.vue-ui-kit-helper) ，模拟 [helper](https://marketplace.visualstudio.com/search?term=helper&target=VSCode&category=All%20categories&sortBy=Relevance) 类插件的使用体验。
-2. 项目 snippet 仅显示文件中标注 `@show` 的属性/方法，默认隐藏 slot。
+1. 配合 [vue-ui-kit-helper](https://marketplace.visualstudio.com/items?itemName=engvuchen.vue-ui-kit-helper) ，尽可能还原 [helper](https://marketplace.visualstudio.com/search?term=helper&target=VSCode&category=All%20categories&sortBy=Relevance) 插件的自动补全体验。
+2. 项目 snippet 仅显示文件中标注 `@show` 的 prop/event，默认隐藏 slot。
 
 ```bash
 npx vue-snippet-gen --conf --filter
@@ -48,15 +49,14 @@ npx vue-snippet-gen --conf
 
 ## JSDocs 标记支持
 
-1. description - 不带标注的备注。
-2. `@enum` - 默认值列表。
-4. `@default` - 修改默认值。
-5. `@show` - 在 `--filter` 模式下，显示指定的属性、方法。
-3. `@ignore` - 忽略该属性/方法/slot的解析。`--conf` / `--filter`，均不可见。
+1. description - 不带标注的备注；
+2. `@enum` - 默认值列表；
+3. `@default` - 修改默认值；
+4. `@show` - 在 `--filter` 模式下，显示指定的属性、方法；
+5. `@ignore` - 忽略该 prop / method / slot 的解析。`--conf` / `--filter`，均不可见。
 
 **默认值优先级**
 
 `@enum` > `@default` > 文件明文 `default`
 
 ![标记演示.png](https://i.loli.net/2021/09/12/BpmJjvP5bM1UwfR.png)
-
