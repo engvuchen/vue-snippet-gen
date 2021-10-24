@@ -1,6 +1,6 @@
 'use strict';
 
-const moduleAlias = require('module-alias/register');
+const moduleAlias = require('module-alias');
 
 const vueDocs = require('vue-docgen-api');
 const fs = require('fs');
@@ -31,9 +31,20 @@ if (!parseConf.length) {
   return;
 }
 
+parseConf.forEach(({ path: componentDir, tagNameType, mainComponents }) => {
+  let componentDirPath = `${process.cwd().replace(/\\/g, '/')}/node_modules/${componentDir}`;
+  if (!componentDir) {
+    console.log('Miss path!');
+    help();
+    return;
+  }
+  componentDir = componentDir.replace(/\\/g, '/');
+  moduleAlias.addAlias(componentDir, componentDirPath);
+});
+require('module-alias/register');
+
 parseConf.map(curConf => {
   let { path: componentDir, tagNameType, mainComponents } = curConf;
-
   if (!componentDir) {
     console.log('Miss path!');
     help();
@@ -44,7 +55,6 @@ parseConf.map(curConf => {
   let componentInfoList = [];
   let componentLibName = componentDir.split('/')[0].match(/[a-z\-_]+/g)[0];
   let componentDirPath = `${process.cwd().replace(/\\/g, '/')}/node_modules/${componentDir}`;
-  moduleAlias.addAlias(componentDir, componentDirPath);
 
   fs.access(componentDirPath, fs.constants.F_OK, async err => {
     if (err) {
