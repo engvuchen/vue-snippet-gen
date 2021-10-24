@@ -66,7 +66,7 @@ parseConf.map(curConf => {
           .parse(filePath, {
             jsx: true,
             validExtends(fullFilePath) {
-              return new RegExp(`[\\/]node_modules[\\/]${componentDir}`).test(fullFilePath);
+              return new RegExp(`[\\/]node_modules[\\/]${componentDirPath}`).test(fullFilePath);
             },
           })
           .catch(err => console.log('err'));

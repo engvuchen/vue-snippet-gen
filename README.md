@@ -74,7 +74,9 @@ npx vue-snippet-gen --conf
 需要在 `A` 项目的 `package.json` 中配置：
 
 ```json
+{
   "_moduleAliases": {
-    "element": "."
+    "element-demo": "./node_modules/element-test-demo"
   }
+}
 ```
