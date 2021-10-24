@@ -1,6 +1,6 @@
 {
   "name": "vue-snippet-gen",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "解析 Vue 组件库，生成项目 snippet",
   "main": "index.js",
   "dependencies": {
@@ -19,5 +19,8 @@
     "snippet"
   ],
   "author": "engvuchen",
-  "license": "ISC"
+  "license": "ISC",
+  "_moduleAliases": {
+    "element-demo": "./node_modules/element-test-demo"
+  }
 }
