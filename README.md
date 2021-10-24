@@ -60,3 +60,21 @@ npx vue-snippet-gen --conf
 `@enum` > `@default` > 文件明文 `default`
 
 ![标记演示.png](https://i.loli.net/2021/09/12/BpmJjvP5bM1UwfR.png)
+
+## 注意点
+
+1. `A` 项目引入了 `element-ui`，这个组件库使用了 `element` 作为 `alias`，但他是给 webpack 使用的，`node.js` 是不识别这个别名；
+
+可能会出现这样的报错：
+
+![报错案例.png](https://i.loli.net/2021/10/24/CzkdjsFX6awHE2t.png)
+
+`vue-snippet-gen` 引入了 [`module-alias`](https://www.npmjs.com/package/module-alias) 来解决这个问题；
+
+需要在 `A` 项目的 `package.json` 中配置：
+
+```json
+  "_moduleAliases": {
+    "element": "."
+  }
+```

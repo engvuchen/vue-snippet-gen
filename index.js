@@ -1,5 +1,6 @@
 'use strict';
 
+require('module-alias/register');
 const vueDocs = require('vue-docgen-api');
 const fs = require('fs');
 const path = require('path');
@@ -64,6 +65,9 @@ parseConf.map(curConf => {
         let result = await vueDocs
           .parse(filePath, {
             jsx: true,
+            validExtends(fullFilePath) {
+              return new RegExp(`[\\/]node_modules[\\/]${componentDir}`).test(fullFilePath);
+            },
           })
           .catch(err => console.log('err'));
 
