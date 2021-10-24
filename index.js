@@ -1,6 +1,6 @@
 'use strict';
 
-const moduleAlias = require('module-alias/register')(__dirname);
+const moduleAlias = require('module-alias/register');
 
 const vueDocs = require('vue-docgen-api');
 const fs = require('fs');
