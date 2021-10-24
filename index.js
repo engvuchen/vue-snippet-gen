@@ -1,6 +1,8 @@
 'use strict';
 
-require('module-alias/register');
+console.log('__dirname', __dirname);
+
+require('module-alias/register')(__dirname);
 const vueDocs = require('vue-docgen-api');
 const fs = require('fs');
 const path = require('path');
